@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="/styles/login.css">
+
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form action="/register" method="POST" id="register">
+			<h1>Create Account</h1>
+<!-- REGISTRATION -->
+                <!-- Not now -->
+
+            <!-- <div class="social-container">
+				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+			</div> -->
+            <span>or use your email for registration</span>
+			<span class="bg-warning" id="error_reg"></span>
+			<span class="bg-success" id="success_reg"></span>
+            <input type="text" placeholder="Full name" id="name"/>
+            <label for="date">Select Date of birth</label>
+            <input type="date" placeholder="Date of birth" id="date"/>
+            <label for="gender">Select Gender</label>
+            <select id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            <input type="email" placeholder="Email" id="email"/>
+            <input type="password" placeholder="Password" id="password"/>
+            <input type="password" placeholder="Confirm Password" id="password2"/>
+			<button type="submit">Sign Up</button>
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<form action="/login" method="POST" id="login">
+            <h1>Sign in</h1>
+            
+            <!-- Not now -->
+
+			<!-- <div class="social-container">
+				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+			</div> -->
+			<span>or use your account</span>
+			<span class="bg-warning" id="login_error"></span>
+			<input type="email" placeholder="Email" id="email_login"/>
+			<input type="password" placeholder="Password" id="password_login"/>
+			<button class="btn" disabled aria-label="Close" ><a href="#" >Forgot your password?</a> </button> 
+			<button type="submit">Sign In</button>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Welcome Back!</h1>
+				<p>Do you still remember your email and password? <br>So whom are you waiting ?</p>
+				<button class="ghost" id="signIn">Sign In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+                <h1>Hello, Friend! <br></h1>
+                <h2>This is Hooks</h2>
+				<p>Stay connected with your friends and family.</p>
+				<button class="ghost" id="signUp">Sign Up</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer>
+	<p>
+		Created by
+		<a target="_blank" href="https://www.facebook.com/Zzz1860">Onik Sahakyan</a>
+		- Don't judge by your Front-End skills.
+    </p>
+</footer>
+
+<script src="/scripts/login.js"></script>
