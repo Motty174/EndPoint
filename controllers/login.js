@@ -44,7 +44,21 @@ class Login{
             })
             .catch(err => res.json({ error : err.message }))
     }
-
+    
+    searchUser(req,res){
+        const user_name=req.body.name
+        const regex = new RegExp(user_name, 'gi')
+        User.find({ name: regex},(err,data) => {
+            if(err){
+                return res.sendStatus(404)
+            }else if(!data){
+                return res.json({ name: 'Not found' })
+            }else{
+                return res.json({ array: data})
+            }
+        })
+    }
+    
 
 }
 

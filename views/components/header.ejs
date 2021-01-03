@@ -5,8 +5,11 @@
     <a class="logo" href="/">Hooks</a>
     <nav>
         <ul class="nav__links navbar-nav">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search in Hooks" aria-label="Search">
-        </ul>
+                <input class="form-control mr-sm-2" type="search" placeholder="Search in Hooks" aria-label="Search" id="header_search">
+                <ul id="found_users">
+                </ul>
+                
+            </ul>
     </nav>
     <a class="cta" href="/deleteMyCookie">Log out</a>
     <p class="menu cta">Menu</p>
@@ -14,9 +17,9 @@
 <div class="overlay">
     <a class="close">&times;</a>
     <div class="overlay__content">
-        <a href="#">Services</a>
-        <a href="#">Projects</a>
-        <a href="#">About</a>
+        <input class="form-control mr-sm-2" type="search" placeholder="Search in Hooks" aria-label="Search">
+        <a class="cta" href="/deleteMyCookie">Log out</a>
     </div>
 </div>
 <script src="/scripts/mobail_header.js"></script>
+<script src="/scripts/header_search.js"></script>

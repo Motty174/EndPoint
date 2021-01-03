@@ -23,6 +23,9 @@ const uniqueId=guid.create().value
 //Check access token
 async function tokenChecker(req,res,next){
     if(req.signedCookies && req.signedCookies.tokens && req.signedCookies.tokens.accessToken){
+        if(req.url=='/login'){
+            return res.redirect('/')
+        }
         try{
            const decodedAccess = jwt.verify(req.signedCookies.tokens.accessToken,secret_access)
             next()
@@ -35,7 +38,11 @@ async function tokenChecker(req,res,next){
                 }
             }
     }else{
-       return res.redirect('/login')
+        if(req.url=='/login'){
+            console.log(req.url)
+            return next()
+        }
+      return res.redirect('/login')
     }
 }
 

@@ -97,6 +97,7 @@ a {
 .friends_list li{
     cursor: pointer;
     margin-top: .5rem;
+    margin-bottom: .5rem;
     color: #f8f9fa;
     width: 100%;
 }
