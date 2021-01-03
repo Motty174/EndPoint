@@ -9,6 +9,8 @@ const rateLimit=require('express-rate-limit')
 const config=require('./config/keys')
 
 const app=express()
+const server=require('http').Server(app)
+const io=require('socket.io')(server)
 
 //Mongoose settings
 mongoose.set('useNewUrlParser', true);
@@ -41,9 +43,20 @@ app.use(expressEjsLayouts)
 //Connecting routes
 app.use( '/' , require('./Routes/main_route') )
 
+io.on('connection',socket=>{
+    console.log('Connected')
+    socket.on('message',message=>{
+        console.log(message,socket.id)
+    })
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+      });
+})
+
+
 mongoose.connect(config.MongoURI,err=>{
     if(err) throw err
-    app.listen(config.PORT,err=>{
+    server.listen(config.PORT,err=>{
         if(err) throw err
         console.log('MongoDB and Server: Connected')
     })

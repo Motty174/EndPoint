@@ -13,9 +13,9 @@ const uniqueId=guid.create().value
         _id: user._id,
         unique_id: uniqueId
     }
-    const accessToken=jwt.sign(payload,secret_access,{expiresIn:10})
+    const accessToken=jwt.sign(payload,secret_access,{expiresIn:3600})
     // Refresh TOken
-    const salt=bcrypt.genSaltSync(Math.round(Math.random()*20))
+    const salt=bcrypt.genSaltSync(Math.round(Math.random()*10)+10)
     await Token.create({unique_id:uniqueId,token: bcrypt.hashSync(accessToken,salt) })
     return {accessToken: accessToken}       
 }
@@ -54,7 +54,7 @@ async function refreshToken(req,res,next){
                 }
                 await Token.deleteOne({unique_id: token.unique_id})
                 const newTokens=await getTokens(user)
-                res.cookie('tokens',newTokens,{signed:true,httpOnly:true,maxAge: 12*60*60*1000})
+                res.cookie('tokens',newTokens,{signed:true,httpOnly:true,maxAge: 2*60*60*1000})
                 return next()
             }else{
                         res.clearCookie('tokens')

@@ -1,7 +1,6 @@
 const User=require('../Models/user')
 const bcrypt =require('bcrypt')
 const valid=require('validator').default
-const {Password_Salt}=require('../config/keys')
 const {getTokens}=require('../controllers/tokens')
 
 class Login{
@@ -33,7 +32,7 @@ class Login{
                                     }
                    getTokens(tokens_user)
                     .then(data=>{
-                        res.cookie('tokens',data,{signed:true,httpOnly:true,maxAge: 12*60*60*1000})
+                        res.cookie('tokens',data,{signed:true,httpOnly:true,maxAge: 2*60*60*1000})
                         return res.json({ success: "Logged in" })
                     })
                     .catch(err=>console.log(err))

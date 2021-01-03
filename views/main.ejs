@@ -1,3 +1,66 @@
-<h1>Main Page</h1>
-<a href="/login">Login</a>
-<a href="/deleteMyCookie">Log Out</a>
+<%- include ('components/header') %>
+<link rel="stylesheet" href="/styles/main.css">
+<link href="/font-awesome/css/all.css" rel="stylesheet">
+<div class="flexbox">
+    <div class=" m-2 text-white main_info">
+        <div class="user_info bg-dark">
+            
+            <img src="/images/onik.jpg" alt="Main picture user" class="user_image rounded-circle">
+            <br><br>
+            <p class="user_name text-light ">Onik Sahakyan</p>
+            <ul class="user_info_bar">
+                <li ><a href=""><i class="fas fa-envelope fa-2x" ></i></a></li>
+                <li ><a href="#"><i class="fas fa-users fa-2x"></i></a></li>
+                <li ><a href="#"><i class="fas fa-bell fa-2x"></i></a></li>
+                </ul>
+                <hr>
+            <ul class="user_friends p-0 m-0">
+                <li style="color: rgb(255, 0, 0);">Followers</li>
+                <li>5</li>
+                <hr>
+                <li style="color: rgb(0, 167, 0);">Following</li>
+                <li>3</li>
+                <hr>        
+            </ul>
+            <div class="user_settings">
+                <a href="" >View profile</a>
+            </div>
+        </div>
+            <br>
+            <!-- Suggestions -->
+    <div class="suggestions">Buttons messages friends events </div>
+    </div>
+    <!-- News feed -->
+    <div class="newsfeed">
+        <div>
+            <form action="/" method="post" >
+                <div class="form-group position-relative">
+                    <textarea class="form-control" placeholder="Want to share your day with your friends?" rows="2"></textarea>
+                    <button style="border: none;" type="submit">
+                        <i class="fas fa-share fa-2x news_post_send"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div style="background-color: cornflowerblue;height: 400px;">
+                        Post
+        </div>
+        <div style="background-color: rgb(0, 7, 19);height: 400px;">
+            Post
+        </div>
+    </div>
+    <!-- Online friends -->
+    <div class="m-2 bg-dark friends" >
+        <p class="user_name text-light"> Friends</p>
+        <ul class="friends_list p-0 m-2">
+            <li><img src="/images/onik.jpg" alt=""> <span style="color: white;">Onik Sahakyan</span></li>
+            <li><button ><img src="/images/onik.jpg" alt=""> Onik Sahakyan</button></li>
+            <li><button ><img src="/images/onik.jpg" alt=""> Onik ffafaaffafaSahakyan</button></li>
+        </ul>
+    </div>
+</div>
+<!-- <input type="text" id="message">
+<button id="send">Send</button> -->
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/scripts/main_chat.js"></script>
