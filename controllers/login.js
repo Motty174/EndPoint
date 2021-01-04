@@ -48,7 +48,7 @@ class Login{
     searchUser(req,res){
         const user_name=req.body.name
         const regex = new RegExp(user_name, 'gi')
-        User.find({ name: regex},(err,data) => {
+        User.find({ name: regex},{name: 1},(err,data) => {
             if(err){
                 return res.sendStatus(404)
             }else if(!data){
@@ -59,6 +59,29 @@ class Login{
         })
     }
     
+    allUsers(req,res,next){
+        User.find({},{name: 1,dateOfBirth: 1,gender: 1},(err,data) => {
+            if(err){
+               return res.status(404).send('Page is not working.')
+            }
+            req.users=data
+            next()
+        })
+    }
+    
+    singleUser(req,res,next){
+        User.findById(req.params.id,{password:0},(err,data)=>{
+            if(err){
+                return res.status(500).send('Error occured')
+            }
+            if(!data){
+                    req.foundUser={}
+            return    next()
+            }
+                req.foundUser=data
+                next()
+        })
+    }
 
 }
 

@@ -21,7 +21,9 @@ const user=mongoose.Schema({
     password:{
         type: String,
         required: true
-    }
+    },
+    followers:[{type: mongoose.Schema.Types.ObjectId,unique: true}],
+    following:[{type: mongoose.Schema.Types.ObjectId,unique: true}]
 })
 const User=mongoose.model( 'User' , user )
 module.exports=User

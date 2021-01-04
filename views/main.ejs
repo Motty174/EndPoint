@@ -1,13 +1,12 @@
 <%- include ('components/header') %>
 <link rel="stylesheet" href="/styles/main.css">
-<link href="/font-awesome/css/all.css" rel="stylesheet">
 <div class="flexbox">
     <div class=" m-2 text-white main_info">
         <div class="user_info bg-dark">
             
             <img src="/images/onik.jpg" alt="Main picture user" class="user_image rounded-circle">
             <br><br>
-            <p class="user_name text-light ">Onik Sahakyan</p>
+            <p class="user_name text-light "><%= data.name %></p>
             <ul class="user_info_bar">
                 <li ><a href=""><i class="fas fa-envelope fa-2x" ></i></a></li>
                 <li ><a href="#"><i class="fas fa-users fa-2x"></i></a></li>
@@ -16,10 +15,10 @@
                 <hr>
             <ul class="user_friends p-0 m-0">
                 <li style="color: rgb(255, 0, 0);">Followers</li>
-                <li>5</li>
+                <li><%= data.followers.length %></li>
                 <hr>
                 <li style="color: rgb(0, 167, 0);">Following</li>
-                <li>3</li>
+                <li><%= data.following.length %></li>
                 <hr>        
             </ul>
             <div class="user_settings">
@@ -61,7 +60,7 @@
 </div>
 <!-- <input type="text" id="message">
 <button id="send">Send</button> -->
-
+<p><%= data %></p>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/scripts/main_chat.js"></script>
 <script src="/scripts/main_post.js"></script>

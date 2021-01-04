@@ -1,0 +1,20 @@
+<%- include ('components/header') %>
+
+<link rel="stylesheet" href="/styles/users.css">
+<h1 class="text-center">Users</h1>
+<div class="users_list"> 
+    <% data.forEach(elem => { %>
+            <div class="card m-2" style="width: 18rem;">
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title"><%= elem.name %></h5>
+                  <p class="card-text">Users text.Status Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat laudantium laboriosam esse earum cum corporis. Deleniti delectus repellat optio tenetur, repellendus et, ratione aut quo </p>
+                  <a href="/<%= elem.id %>" class="btn btn-primary">Go to profile</a>
+                </div>
+              </div>
+        <% }) %>
+</div>
+
+
+
+<script src="/scripts/users.js"></script>

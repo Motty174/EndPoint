@@ -28,7 +28,8 @@ async function tokenChecker(req,res,next){
         }
         try{
            const decodedAccess = jwt.verify(req.signedCookies.tokens.accessToken,secret_access)
-            next()
+           req.user=decodedAccess 
+           next()
         }catch(err){
            if(err.message=='jwt expired'){
               refreshToken(req,res,next)
