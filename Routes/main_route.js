@@ -1,16 +1,30 @@
+const fs=require('fs')
 const {Router} = require('express')
 const {register}=require('../controllers/register')
-const {login,searchUser,allUsers,singleUser}=require('../controllers/login')
+const {login,searchUser,allUsers,singleUser,settings}=require('../controllers/login')
 const {tokenChecker,deleteMyToken}=require('../controllers/tokens')
 const User = require('../Models/user')
+const multer=require('multer')
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.join(__dirname,`../public/uploads/${req.user._id}`))
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+  })
+const upload=multer({storage: storage})
+const path=require('path')
+
 
 const route = Router()
 
 route
 .get( '/' ,tokenChecker, (req,res) => {
-    User.findById(req.user._id,{password:0},(err,data)=>{
-        res.render( 'main' , {data})
-    })
+         if(!fs.existsSync(path.join(__dirname,`../public/uploads/${req.user._id}`))){
+            fs.mkdirSync(path.join(__dirname,`../public/uploads/${req.user._id}`))
+        }
+        res.render( 'main' , {data: req.user})
 }) 
 .get( '/login' ,tokenChecker, (req,res) => {
     res.render('login')
@@ -24,26 +38,37 @@ route
 .get( '/deleteMyCookie' , (req,res) => {
     deleteMyToken(req,res)
 })
+.get( '/settings' , tokenChecker , (req,res) => {
+    res.render('settings',{data: req.user})
+})
+.post( '/settings' , tokenChecker, upload.single('image') , (req,res) => {
+    settings(req,res)
+}) 
 .post( '/searchForUser' , (req,res) => {
     searchUser(req,res)
 })
+.get( '/messages' ,tokenChecker, (req,res) => {
+    const ids=req.user.followers.concat(req.user.following) 
+    // Not working should install babel.Look !!!!!!=========
+    // const newIds=[...new Set(ids)]
+    User.find().select('name image ').where('_id').in(ids).exec((err, records) => {
+        console.log(records)
+        res.render('messages',{rec: records,data: req.user})
+    });
+})
 .get( '/users', allUsers , tokenChecker, (req,res) => {
-    console.log(req.users)
     res.render('users',{data: req.users})
 })
+// .post( '/users' ,tokenChecker, (req,res) =>{
+//     
+// })
 .get( '/users/:id', singleUser , tokenChecker, (req,res) => {
-    res.render('user',{data: req.foundUser})
+    res.render('user',{data: req.foundUser,id: req.user._id,
+                                                    followers: req.user.followers,
+                                                    following: req.user.following})
 })
-.get( '/followerslist' , tokenChecker , (req,res) => {
-    User.findById(req.user._id,{followers:1,following:1},(err,data)=>{
-        if(err){
-            res.sendStatus(500)
-        }
-        res.json(data)
-    })
-} )
 .post( '/follow' , tokenChecker,(req,res) => {
-    User.findByIdAndUpdate(req.user._id,{$push: {"following": req.body.id}},(err,data)=>{
+    User.findByIdAndUpdate(req.user._id,{$push: {"following": req.body.id}},(err,myUser)=>{
         if(err){
             return res.statusCode(500)
         }
@@ -51,12 +76,12 @@ route
             if(err){
                 return res.statusCode(500)
             }
-            return res.json({success: 'Added' })
+            return res.json({success: 'Added',followers: myUser.followers,following: myUser.following })
         })  
     })
 })
 .post( '/unfollow' ,tokenChecker, (req,res) => {
-    User.findByIdAndUpdate(req.user._id, {$pull: {"following" :req.body.id}},(err,data) => {
+    User.findByIdAndUpdate(req.user._id, {$pull: {"following" :req.body.id}},(err,myUser) => {
         if(err){
             return res.statusCode(500)
         }
@@ -64,8 +89,9 @@ route
             if(err){
                 return res.statusCode(500)
             }
-            return res.json({success: "Deleted"})
+            return res.json({success: "Deleted", followers: myUser.followers, following: myUser.following})
         })
     })
 })
+
 module.exports = route

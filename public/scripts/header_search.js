@@ -3,7 +3,7 @@ document.getElementById('header_search').oninput=(e) => {
     const search_value = {
         name: document.getElementById('header_search').value
     }
-    fetch('http://localhost:8080/searchForUser',{
+    fetch('https://endpointweb.herokuapp.com/searchForUser',{
         method: "POST",
         headers: {
             'Content-Type':'application/json'

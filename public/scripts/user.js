@@ -1,42 +1,44 @@
 const follow=document.getElementById('follow')
-//Check if I follow him?
-fetch('http://localhost:8080/followerslist')
-.then(res => res.json())
-.then(data => {
-    console.log(data)
-    if(!data.following.includes(document.querySelector('h5').id)){
-console.log(true)
-        follow.onclick=function(event){
-            event.preventDefault()
-            const body={
-                id: document.querySelector('h5').id
-            }
-            fetch('http://localhost:8080/follow',{
-                method: "POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body: JSON.stringify(body)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.success){
-                    follow.innerText='Unfollow'
-                    follow.classList.remove('bg-success')
-                    follow.classList.add('bg-danger')
-                }
-            })
+const following_id=document.querySelector('h5').id
+const x=document.getElementById('info').innerHTML
+const spliting=x.split('|')
+const user={
+    id: spliting[1],
+    followers: spliting[3].split(','),
+    following: spliting[5].split(',')
+}
+if(user.following.includes(following_id)){
+    follow.innerText="Unfollow"
+    follow.classList.remove('btn-success')
+    follow.classList.add('btn-danger')
+}
+if(user.id==following_id){
+follow.remove()
+}
+follow.onclick=function(event){
+    event.preventDefault()
+    const body={
+        id: document.querySelector('h5').id
+    }
+    if(!user.following.includes(document.querySelector('h5').id)){   
+        fetch('https://endpointweb.herokuapp.com/follow',{
+        method: "POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(body)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            user.following.push(following_id)
+            follow.innerText='Unfollow'
+            follow.classList.remove('btn-success')
+            follow.classList.add('btn-danger')
         }
-
+    })
     }else{
-        follow.innerText='Unfollow'
-        follow.classList.add('bg-danger')
-        follow.onclick=function(event){
-            event.preventDefault()
-        const body={
-            id: document.querySelector('h5').id
-        }
-        fetch('http://localhost:8080/unfollow',{
+        fetch('https://endpointweb.herokuapp.com/unfollow',{
             method: "POST",
             headers:{
                 "Content-Type":"application/json"
@@ -46,12 +48,11 @@ console.log(true)
         .then(res => res.json())
         .then(data => {
             if(data.success){
+                user.following.splice(user.followers.indexOf(following_id),1)
                 follow.innerText='Follow'
-                follow.classList.remove('bg-danger')
-                follow.classList.add('bg-success')        
-            }
-        })
-        }
+                follow.classList.remove('btn-danger')
+                follow.classList.add('btn-success')
+                }
+        })       
     }
-})
-
+}

@@ -117,4 +117,7 @@
       display: initial;
     }
   }
-  
+.header_elem{
+  display: inline-block;
+  position: relative;
+}

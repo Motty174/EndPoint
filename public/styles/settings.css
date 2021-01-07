@@ -1,0 +1,7 @@
+#image_holder > i {
+visibility: hidden;
+}
+#image_holder:hover > i {
+    visibility:visible;
+    }
+    

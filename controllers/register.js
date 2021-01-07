@@ -46,7 +46,7 @@ class Register{
                 password: user.password,
                 dateOfBirth: valid.toDate(user.date),
                 gender :user.gender
-            }
+               }
             newUser.password=bcrypt.hashSync(newUser.password,Password_Salt)
             User.create(newUser)
             .then(data=>{

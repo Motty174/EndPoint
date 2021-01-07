@@ -52,7 +52,26 @@ io.on('connection',socket=>{
         console.log('user disconnected');
       });
 })
+// mongoose.connection.once('open',()=>{
 
+    
+// var fs = require('fs');
+// var Grid = require('gridfs-stream');
+// var GridFS = Grid(mongoose.connection.db, mongoose.mongo);
+
+// function putFile(path, name, callback) {
+//     var writestream = GridFS.createWriteStream({
+//         filename: name
+//     });
+//     writestream.on('close', function (file) {
+//       callback(null, file);
+//     });
+//     fs.createReadStream(path).pipe(writestream);
+// }    
+// putFile('package.json','Onik_File',()=>{
+//     console.log("done")
+// })    
+// })
 
 mongoose.connect(config.MongoURI,err=>{
     if(err) throw err

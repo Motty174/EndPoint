@@ -1,15 +1,17 @@
 <%- include ('components/header') %>
 <link rel="stylesheet" href="/styles/main.css">
 <div class="flexbox">
+    <!-- User info -->
     <div class=" m-2 text-white main_info">
-        <div class="user_info bg-dark">
-            
-            <img src="/images/onik.jpg" alt="Main picture user" class="user_image rounded-circle">
+        <div class="user_info p-4">
+
+            <img src=<%= data.image %> alt="Main picture user" class="user_image rounded-circle">
             <br><br>
             <p class="user_name text-light "><%= data.name %></p>
+            <p class="user_name text-light "> "<%= data.bio %>"</p>
             <ul class="user_info_bar">
-                <li ><a href=""><i class="fas fa-envelope fa-2x" ></i></a></li>
-                <li ><a href="#"><i class="fas fa-users fa-2x"></i></a></li>
+                <li ><a href="/messages"><i class="fas fa-envelope fa-2x" ></i></a></li>
+                <li ><a href="/users"><i class="fas fa-users fa-2x"></i></a></li>
                 <li ><a href="#"><i class="fas fa-bell fa-2x"></i></a></li>
                 </ul>
                 <hr>
@@ -21,13 +23,15 @@
                 <li><%= data.following.length %></li>
                 <hr>        
             </ul>
+            <br>
             <div class="user_settings">
-                <a href="" >View profile</a>
+                <a href="/users/<%= data._id %>" >View profile</a>
             </div>
         </div>
             <br>
             <!-- Suggestions -->
     <div class="suggestions">Buttons messages friends events </div>
+        <p class="text-dark">Not working Now</p>
     </div>
     <!-- News feed -->
     <div class="newsfeed">
@@ -49,18 +53,11 @@
         </div>
     </div>
     <!-- Online friends -->
-    <div class="m-2 bg-dark friends" >
-        <p class="user_name text-light"> Friends</p>
-        <ul class="friends_list p-0 m-2">
-            <li><img src="/images/onik.jpg" alt=""> <span style="color: white;">Onik Sahakyan</span></li>
-            <li><img src="/images/onik.jpg" alt=""> <span style="color: white;">Onik Sahakyan</span></li>
-            <li><img src="/images/onik.jpg" alt=""> <span style="color: white;">Onik Sahakyan</span></li>
-        </ul>
-    </div>
+
 </div>
 <!-- <input type="text" id="message">
 <button id="send">Send</button> -->
-<p><%= data %></p>
+<p hidden id="user_info"><%= data %></p>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/scripts/main_chat.js"></script>
 <script src="/scripts/main_post.js"></script>

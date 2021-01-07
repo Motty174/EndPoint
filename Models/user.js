@@ -18,12 +18,17 @@ const user=mongoose.Schema({
         required: true,
         unique: true
     },
+    bio:{
+        type: String,
+        default: "Hey.I just joined Hooks."
+    },
     password:{
         type: String,
         required: true
     },
-    followers:[{type: mongoose.Schema.Types.ObjectId,unique: true}],
-    following:[{type: mongoose.Schema.Types.ObjectId,unique: true}]
+    image:{type: String,default: '/images/user.png'},
+    followers:[{type: mongoose.Schema.Types.ObjectId}],
+    following:[{type: mongoose.Schema.Types.ObjectId}]
 })
 const User=mongoose.model( 'User' , user )
 module.exports=User

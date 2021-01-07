@@ -69,7 +69,7 @@ function isValid(user){
     return true
 }
 if(isValid(user)){
-    fetch('http://localhost:8080/register',{
+    fetch('https://endpointweb.herokuapp.com/register',{
         method: "POST",
         headers:{
             'Content-Type':'application/json'
@@ -117,7 +117,7 @@ document.getElementById('login').addEventListener('submit',(event)=>{
         errorHandle.innerText="Please write valid email."
         return false
     }
-    fetch('http://localhost:8080/login',{
+    fetch('https://endpointweb.herokuapp.com/login',{
         method: "POST",
         headers:{
             'Content-Type':'application/json'
@@ -126,12 +126,14 @@ document.getElementById('login').addEventListener('submit',(event)=>{
     })
     .then(res => res.json() )
     .then(data => {
-        if(data.error){
-          return  errorHandle.innerText=data.error
+        console.log(data)
+        if(data.error!=undefined){
+           return  errorHandle.innerText=data.error
         }
-        location.replace('/') 
+     return  location.replace('/') 
     })
     .catch(err => console.log(err))
+    
 })
 
 //Valid email
