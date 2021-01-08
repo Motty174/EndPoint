@@ -5,7 +5,7 @@ const cookieParser=require('cookie-parser')
 const expressEjsLayouts = require('express-ejs-layouts')
 const helmet=require('helmet') 
 const rateLimit=require('express-rate-limit') 
-
+const Chat=require('./Models/main_chat')
 const config=require('./config/keys')
 
 const app=express()
@@ -43,14 +43,18 @@ app.use(expressEjsLayouts)
 //Connecting routes
 app.use( '/' , require('./Routes/main_route') )
 
+
 io.on('connection',socket=>{
     console.log('Connected')
-    socket.on('message',message=>{
-        console.log(message,socket.id)
-    })
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-      });
+       
+    socket.on('message',(data)=>{
+            io.emit('broadcast',data)
+        })
+        
+        socket.on('disconnect',()=>{
+            console.log('Disconnected')
+        })
+    
 })
 // mongoose.connection.once('open',()=>{
 

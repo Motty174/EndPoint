@@ -5,6 +5,7 @@ const {login,searchUser,allUsers,singleUser,settings}=require('../controllers/lo
 const {tokenChecker,deleteMyToken}=require('../controllers/tokens')
 const User = require('../Models/user')
 const multer=require('multer')
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, path.join(__dirname,`../public/uploads/${req.user._id}`))
@@ -13,6 +14,7 @@ const storage = multer.diskStorage({
       cb(null, file.fieldname + '-' + Date.now())
     }
   })
+
 const upload=multer({storage: storage})
 const path=require('path')
 
@@ -29,30 +31,36 @@ route
 .get( '/login' ,tokenChecker, (req,res) => {
     res.render('login')
 })
+
 .post( '/register' , (req,res) => {
     register(req,res)
 })
+
 .post( '/login' , (req,res) => {
   login(req,res)
 })
+
 .get( '/deleteMyCookie' , (req,res) => {
     deleteMyToken(req,res)
 })
+
 .get( '/settings' , tokenChecker , (req,res) => {
     res.render('settings',{data: req.user})
 })
+
 .post( '/settings' , tokenChecker, upload.single('image') , (req,res) => {
     settings(req,res)
 }) 
+
 .post( '/searchForUser' , (req,res) => {
     searchUser(req,res)
 })
+
 .get( '/messages' ,tokenChecker, (req,res) => {
     const ids=req.user.followers.concat(req.user.following) 
     // Not working should install babel.Look !!!!!!=========
     // const newIds=[...new Set(ids)]
     User.find().select('name image ').where('_id').in(ids).exec((err, records) => {
-        console.log(records)
         res.render('messages',{rec: records,data: req.user})
     });
 })

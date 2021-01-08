@@ -94,6 +94,9 @@ class Login{
      
     settings(req,res){
         if(req.file!=undefined){
+            if(req.file.mimetype!='image/jpeg',req.file.mimetype!='image/gif',req.file.mimetype!='image/png'){
+                return res.redirect('/settings')  
+            }
             User.findByIdAndUpdate(req.user._id,{image: `/uploads/${req.user._id}/${req.file.filename}`}, (err,data) => {
               if(err){
                   return res.status(500).send('Server error')
