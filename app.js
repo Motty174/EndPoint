@@ -46,11 +46,24 @@ app.use( '/' , require('./Routes/main_route') )
 
 io.on('connection',socket=>{
     console.log('Connected')
-       
+    socket.on('create_room',data=>{
+        console.log(data)
+    })   
+    socket.on('typing',()=>{
+        socket.broadcast.emit('typing_on', "Typing...")
+    })
+    socket.on('end_typing',()=>{
+        socket.broadcast.emit('typing_end', "Typing...")
+    })
+
     socket.on('message',(data)=>{
             io.emit('broadcast',data)
         })
-        
+    socket.on('message_to',(data)=>{
+        socket.join(data.room)
+        io.to(data.room).emit('hi')
+    })   
+
         socket.on('disconnect',()=>{
             console.log('Disconnected')
         })
