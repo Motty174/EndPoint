@@ -1,3 +1,4 @@
+
 const follow = document.getElementById('follow')
 const following_id = document.querySelector('h5').id
 const x = document.getElementById('info').innerHTML
@@ -34,7 +35,8 @@ follow.onclick = function(event){
     }
     
     if( !user.following.includes(document.querySelector('h5').id )){   
-        fetch('https://endpointweb.herokuapp.com/follow',{
+       
+        fetch(`${local_host}follow`,{
         
         method: "POST",
         
@@ -59,7 +61,7 @@ follow.onclick = function(event){
         }
     })
     }else{
-        fetch('https://endpointweb.herokuapp.com/unfollow',{
+        fetch(`${local_host}unfollow`,{
            
             method: "POST",
             

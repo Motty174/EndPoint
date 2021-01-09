@@ -4,8 +4,7 @@
     <!-- User info -->
     <div class=" m-2 text-white main_info">
         <div class="user_info p-4" style="display: flex;flex-direction: column;width: 100%; ">
-<p hidden><%= data %></p>
-            <img style="width: 100%;max-width: 150px;height: auto;"  src=<%= data.image %> alt="Main picture user" class="user_image rounded-circle">
+            <img style="width: 100%;max-width:350px;height: auto;"  src=<%= data.image %> alt="Main picture user" class="user_image rounded-circle">
             <br><br>
             <p class="user_name text-light "><%= data.name %></p>
             <p class=" text-light " style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 20vw;"> "<%= data.bio %>"</p>
@@ -31,7 +30,8 @@
             <br>
             <!-- Suggestions -->
     <div class="suggestions">Buttons messages friends events </div>
-        <p class="text-dark">Not working Now</p>
+      
+    <p class="text-primary " id="online">Online: 0</p>
     </div>
     <!-- News feed -->
     <div class="newsfeed">
@@ -45,11 +45,8 @@
                 </div>
             </form>
         </div>
-        <div style="background-color: cornflowerblue;height: 400px;">
-                        Post
-        </div>
-        <div style="background-color: rgb(0, 7, 19);height: 400px;">
-            Post
+        <div id="post_handler">
+                    
         </div>
     </div>
     <!-- Online friends -->
@@ -59,5 +56,5 @@
 <button id="send">Send</button> -->
 <p hidden id="user_info"><%= data %></p>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/scripts/main_chat.js"></script>
+<script src="/scripts/main.js"></script>
 <script src="/scripts/main_post.js"></script>

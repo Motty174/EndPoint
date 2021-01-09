@@ -43,18 +43,24 @@ app.use(expressEjsLayouts)
 //Connecting routes
 app.use( '/' , require('./Routes/main_route') )
 
+const online=[]
 
 io.on('connection',socket=>{
-    console.log('Connected')
-    socket.on('create_room',data=>{
-        console.log(data)
-    })   
+    //Online
+    online.push(socket.id)
+    io.emit('online',online.length)
+
+    //Listening on post
+    socket.on('post',value => {
+        io.emit('post_get',value)
+    })
+
     socket.on('typing',()=>{
         socket.broadcast.emit('typing_on', "Typing...")
-    })
+        })
     socket.on('end_typing',()=>{
         socket.broadcast.emit('typing_end', "Typing...")
-    })
+        })
 
     socket.on('message',(data)=>{
             io.emit('broadcast',data)
@@ -62,11 +68,12 @@ io.on('connection',socket=>{
     socket.on('message_to',(data)=>{
         socket.join(data.room)
         io.to(data.room).emit('hi')
-    })   
+        })   
 
         socket.on('disconnect',()=>{
-            console.log('Disconnected')
-        })
+            online.splice(socket.id,1)
+            io.emit('offline',online.length)
+            })
     
 })
 // mongoose.connection.once('open',()=>{

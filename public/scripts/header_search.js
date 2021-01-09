@@ -1,9 +1,10 @@
+
 document.getElementById('header_search').oninput=(e) => {
     e.preventDefault()
     const search_value = {
         name: document.getElementById('header_search').value
     }
-    fetch('https://endpointweb.herokuapp.com/searchForUser',{
+    fetch(`${local_host}searchForUser`,{
         method: "POST",
         headers: {
             'Content-Type':'application/json'
