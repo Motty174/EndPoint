@@ -3,12 +3,12 @@
 <div class="flexbox">
     <!-- User info -->
     <div class=" m-2 text-white main_info">
-        <div class="user_info p-4">
-
-            <img src=<%= data.image %> alt="Main picture user" class="user_image rounded-circle">
+        <div class="user_info p-4" style="display: flex;flex-direction: column;width: 100%; ">
+<p hidden><%= data %></p>
+            <img style="width: 100%;max-width: 150px;height: auto;"  src=<%= data.image %> alt="Main picture user" class="user_image rounded-circle">
             <br><br>
             <p class="user_name text-light "><%= data.name %></p>
-            <p class="user_name text-light "> "<%= data.bio %>"</p>
+            <p class=" text-light " style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 20vw;"> "<%= data.bio %>"</p>
             <ul class="user_info_bar">
                 <li ><a href="/messages"><i class="fas fa-envelope fa-2x" ></i></a></li>
                 <li ><a href="/users"><i class="fas fa-users fa-2x"></i></a></li>

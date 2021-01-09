@@ -1,17 +1,21 @@
 <%- include ('components/header') %>
+
 <div class="d-flex justify-content-center ">
 <div class="d-flex justify-content-center flex-column">
 <div class="card text-center " style="width: 18rem;">
-    <img class="card-img-top" width="286px" height="286px" src=<%= data.image %>  alt="Card image cap">
+    <img class="card-img-top" style="width: 100%;max-width: 286px;height: auto;" src=<%= data.image %>  alt="Card image cap">
     <div class="card-body">
       <h5 class="card-title" id=<%= data._id %>><%= data.name %></h5>
       <p>Date of birth - <%= data.dateOfBirth %></p>
       <p>Gender - <%= data.gender %></p>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <p class="card-text"><%= data.bio %></p>
       <a href="#" id='follow' class="btn btn-success">Follow</a>
     </div>
   </div>
+  
   <a href="/" class="btn btn-outline-secondary">To main page</a>
+<br>
+<br>
 </div>
 <p hidden id="info">ID: |<%= id %>| followers: |<%= followers %>| following: |<%= following %>| </p>
 </div>

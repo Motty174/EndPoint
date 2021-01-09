@@ -26,10 +26,10 @@ route
          if(!fs.existsSync(path.join(__dirname,`../public/uploads/${req.user._id}`))){
             fs.mkdirSync(path.join(__dirname,`../public/uploads/${req.user._id}`))
         }
-        res.render( 'main' , {data: req.user})
+        res.render( 'main' , {data: req.user,title: "Hooks"})
 }) 
 .get( '/login' ,tokenChecker, (req,res) => {
-    res.render('login')
+    res.render('login',{title: "Welcome to Hooks"})
 })
 
 .post( '/register' , (req,res) => {
@@ -37,7 +37,7 @@ route
 })
 
 .post( '/login' , (req,res) => {
-  login(req,res)
+  login( req, res )
 })
 
 .get( '/deleteMyCookie' , (req,res) => {
@@ -45,7 +45,7 @@ route
 })
 
 .get( '/settings' , tokenChecker , (req,res) => {
-    res.render('settings',{data: req.user})
+    res.render('settings',{data: req.user,title: 'Settings'})
 })
 
 .post( '/settings' , tokenChecker, upload.single('image') , (req,res) => {
@@ -61,17 +61,17 @@ route
     // Not working should install babel.Look !!!!!!=========
     // const newIds=[...new Set(ids)]
     User.find().select('name image ').where('_id').in(ids).exec((err, records) => {
-        res.render('messages',{rec: records,data: req.user})
+        res.render('messages',{title:'Messages',rec: records,data: req.user})
     });
 })
 .get( '/users', allUsers , tokenChecker, (req,res) => {
-    res.render('users',{data: req.users})
+    res.render('users',{title: 'All users in Hooks',data: req.users})
 })
 // .post( '/users' ,tokenChecker, (req,res) =>{
 //     
 // })
 .get( '/users/:id', singleUser , tokenChecker, (req,res) => {
-    res.render('user',{data: req.foundUser,id: req.user._id,
+    res.render('user',{title: req.foundUser.name+' | Hooks',data: req.foundUser,id: req.user._id,
                                                     followers: req.user.followers,
                                                     following: req.user.following})
 })

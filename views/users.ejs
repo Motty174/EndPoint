@@ -4,17 +4,17 @@
 <h1 class="text-center">Users</h1>
 <div class="users_list"> 
     <% data.forEach(elem => { %>
-            <div class="card m-2" style="width: 18rem;">
-                <img class="card-img-top" alt="User image" width="286px" height="286px" src=<%= elem.image %> >
+            <div class="card m-2 text-center" style=" width: 18rem;height: 30rem;">
+                <img class="card-img-top" alt="User image" style="margin: auto; width: 100%;max-width: 150px;height: 10rem;" src=<%= elem.image %> >
                 <div class="card-body">
-                  <h3 class="card-title"><%= elem.name %></h5>
+                  <h3 class="card-title"><%= elem.name %></h3>
                   
-                  <p class="card-text"><b>Bio...</b> <br> <%= elem.bio %></p>
+                  <p class="card-text"><b>Bio...</b> <br> <h5 style="word-wrap: break-word;"><%= elem.bio %></h3></p>
                   <p>Followers [<%= elem.followers.length %>]</p>
                   <p>Following [<%= elem.following.length %>]</p>
-                  <p>Gender - [<%= elem.gender %>] <br> Date of birth - <%= elem.dateOfBirth %></p>
+                  <p >Gender - [<%= elem.gender %>] </p>
                   
-                  <a href="/users/<%= elem.id %>" class="btn btn-primary">Go to profile</a>
+                  <a href="/users/<%= elem.id %>" class="btn btn-primary" style="position: absolute;bottom: .5rem;left: 5rem;">Go to profile</a>
                 </div>
               </div>
         <% }) %>
