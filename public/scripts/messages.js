@@ -41,7 +41,7 @@ send_btn.onsubmit= (e) => {
 
 socket.on( 'broadcast' ,(data) => {
     const newLi = document.createElement( 'li' )
-    newLi.innerHTML = `<a href="/users/${data.from}" ><img src=${data.my_image} alt="User" class="rounded-circle"  width="50px" height="50px"></a> `+"   " + data.value
+    newLi.innerHTML = `<a href="/users/${data.from}" ><img src=${data.my_image} alt="User" class="rounded-circle"  width="50px" height="50px"></a> `+"   " + data.value.toString()
     newLi.id = data.from
     newLi.classList.add( 'list-group-item' )
     document.getElementById( 'message_list' ).append( newLi )   
