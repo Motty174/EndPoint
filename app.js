@@ -7,10 +7,14 @@ const helmet=require('helmet')
 const rateLimit=require('express-rate-limit') 
 const Chat=require('./Models/main_chat')
 const config=require('./config/keys')
+const {EventEmitter}=require('events')
 
 const app=express()
 const server=require('http').Server(app)
 const io=require('socket.io')(server)
+const event_1=new EventEmitter()
+module.exports=event_1
+
 
 //Mongoose settings
 mongoose.set('useNewUrlParser', true);
@@ -44,11 +48,17 @@ app.use(expressEjsLayouts)
 app.use( '/' , require('./Routes/main_route') )
 
 const online=[]
+event_1.on('login',(id) => {
+   online.push(id)
+})
+event_1.on('logout',(id) => {
+    online.splice(online.indexOf(id),1)
+})
 
 io.on('connection',socket=>{
-    //Online
-    online.push(socket.id)
-    io.emit('online',online.length)
+    
+    //Online 
+     io.emit('online_count',online.length)
 
     //Listening on post
     socket.on('post',value => {
@@ -70,10 +80,11 @@ io.on('connection',socket=>{
         io.to(data.room).emit('hi')
         })   
 
-        socket.on('disconnect',()=>{
-            online.splice(socket.id,1)
-            io.emit('offline',online.length)
-            })
+        socket.on('disconnect', () => {
+
+            io.emit('online_count',online.length)
+            
+        })
     
 })
 // mongoose.connection.once('open',()=>{

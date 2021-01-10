@@ -49,6 +49,7 @@ class Login{
                         
                         res.cookie('tokens',data,{signed:true,httpOnly:true,maxAge: 2*60*60*1000})
                         console.timeEnd()
+                        require('../app').emit('login',tokens_user._id)
                         return res.json({ success: "Logged in" })
                         
                     })
