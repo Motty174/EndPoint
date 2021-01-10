@@ -75,8 +75,8 @@ route
                                                     followers: req.user.followers,
                                                     following: req.user.following})
 })
-.get( '/followers/:ids',allUsersParam)
-.get( '/following/:ids',allUsersParam)
+.get( '/followers/:ids',tokenChecker,allUsersParam)
+.get( '/following/:ids',tokenChecker,allUsersParam)
 .post( '/follow' , tokenChecker,(req,res) => {
     User.findByIdAndUpdate(req.user._id,{$push: {"following": req.body.id}},(err,myUser)=>{
         if(err){

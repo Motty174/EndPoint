@@ -12,7 +12,10 @@ a {
 }
 .user_info{
     position: relative;
-    max-width: 25vw;
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    max-width: 20vw;
 }
 .user_image{ 
     display:block;

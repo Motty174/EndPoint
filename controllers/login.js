@@ -125,10 +125,13 @@ class Login{
     allUsersParam(req,res){
         let req_title=req.url.split('/')
         let title=''
-        if(req_title[1]=='follower'){
+        if(req_title[1]=='followers'){
             title='Followers'
         }else{
             title='Followings'
+        }
+        if(req.params.ids==0){
+            return res.render('users',{title: title,data: 0,error: `No ${title} found.`})
         }
         const ids=req.params.ids.split(',')
         User.find().where('_id').in(ids).select('name bio image followers following name gender dateOfBirth').exec((err, records) => {
