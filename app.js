@@ -49,11 +49,14 @@ app.use( '/' , require('./Routes/main_route') )
 
 const online=[]
 event_1.on('login',(id) => {
+if(online.indexOf(id)==-1){
    online.push(id)
+}
 })
 event_1.on('logout',(id) => {
+    if(online.indexOf(id)!=-1){
     online.splice(online.indexOf(id),1)
-})
+}})
 
 io.on('connection',socket=>{
     

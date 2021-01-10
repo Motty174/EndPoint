@@ -4,6 +4,7 @@ const {secret_access}=require('../config/keys')
 const Token=require('../Models/tokens')
 const bcrypt=require('bcrypt')
 const User=require('../Models/user')
+const event=require('../app')
 
 async function getTokens(user){
 // Access Token
@@ -16,7 +17,7 @@ const uniqueId=guid.create().value
         unique_id: uniqueId
     }
     
-    const accessToken=jwt.sign(payload,secret_access,{expiresIn:3600})
+    const accessToken=jwt.sign(payload,secret_access,{expiresIn:7})
     // Refresh Token
     const salt=bcrypt.genSaltSync(10)
     const newRefreshHash=bcrypt.hashSync(accessToken,salt)
@@ -35,7 +36,6 @@ const uniqueId=guid.create().value
 
 //Check access token
 async function tokenChecker(req,res,next){
-    console.log('Start Checking')
     
     if(req.signedCookies && req.signedCookies.tokens && req.signedCookies.tokens.accessToken){
     
@@ -44,17 +44,17 @@ async function tokenChecker(req,res,next){
             return res.redirect('/')
     
         }
-        try{
-    
-            const decodedAccess = jwt.verify(req.signedCookies.tokens.accessToken,secret_access)
            
+        try{
+            const decodedAccess = jwt.verify(req.signedCookies.tokens.accessToken,secret_access)
             req.user=await User.findById(decodedAccess._id,{password:0}) 
            
             next()
         }catch(err){
            
             if(err.message=='jwt expired'){
-           
+                const user=jwt.decode(req.signedCookies.tokens.accessToken,secret_access)
+                 event.emit('logout',user._id)
                 refreshToken(req,res,next)
            
             }else{
@@ -67,9 +67,7 @@ async function tokenChecker(req,res,next){
     }else{
         if( req.url=='/login' ){
             
-            console.log(req.url)
-            
-            return next()
+         return next()
         }
       
         return res.redirect('/login')
@@ -112,7 +110,7 @@ async function refreshToken(req,res,next){
                 req.user = await User.findById( token._id, {password:0}) 
                 res.cookie( 'tokens' , newTokens, {signed:true, httpOnly:true, maxAge: 2*60*60*1000})
                 console.timeEnd( 'refreshing' )
-               
+               event.emit('login',user._id)
                 return next()
             
             }else{
@@ -130,7 +128,9 @@ async function refreshToken(req,res,next){
 }
 
 async function deleteMyToken(req,res){
+    
     const token=jwt.decode(req.signedCookies.tokens.accessToken)
+    event.emit('logout',token._id)
     await Token.deleteOne({unique_id: token.unique_id})
     res.clearCookie('tokens')
     res.redirect('/login')
