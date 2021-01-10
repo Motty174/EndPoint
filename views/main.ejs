@@ -3,11 +3,11 @@
 <div class="flexbox">
     <!-- User info -->
     <div class=" m-2 text-white main_info">
-        <div class="user_info p-4" style="display: flex;flex-direction: column;width: 100%; ">
-            <img style="width: 100%;max-width:350px;height: auto;"  src=<%= data.image %> alt="Main picture user" class="user_image rounded-circle">
+        <div class="user_info" style="display: flex;flex-direction: column;width: 100%; ">
+            <img style="width: 100%;max-width:450px;height: auto;"  src=<%= data.image %> alt="Main picture user" class="user_image rounded-circle">
             <br><br>
-            <p class="user_name text-light "><%= data.name %></p>
-            <p class=" text-light " style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 20vw;"> "<%= data.bio %>"</p>
+            <p class="user_name"><%= data.name %></p>
+            <p class=" bio text-center w-100" > "<%= data.bio %>"</p>
             <ul class="user_info_bar">
                 <li ><a href="/messages"><i class="fas fa-envelope fa-2x" ></i></a></li>
                 <li ><a href="/users"><i class="fas fa-users fa-2x"></i></a></li>
@@ -15,23 +15,25 @@
                 </ul>
                 <hr>
             <ul class="user_friends p-0 m-0">
-                <li style="color: rgb(255, 0, 0);">Followers</li>
-                <li><%= data.followers.length %></li>
+                <li >Followers</li>
+                <li><a href="/followers/<%= data.followers %>" ><%= data.followers.length %></a></li>
                 <hr>
-                <li style="color: rgb(0, 167, 0);">Following</li>
-                <li><%= data.following.length %></li>
+                <li >Following</li>
+                <li><a href="/following/<%= data.following %>" ><%= data.following.length %></a></li>
                 <hr>        
             </ul>
             <br>
-            <div class="user_settings">
+            <div class="user_viwe_profile">
                 <a href="/users/<%= data._id %>" >View profile</a>
             </div>
         </div>
             <br>
             <!-- Suggestions -->
-    <div class="suggestions">Buttons messages friends events </div>
+    <div class="suggestions">
+        <p class="text-primary " id="online">Online: 0</p>
+    </div>
       
-    <p class="text-primary " id="online">Online: 0</p>
+    
     </div>
     <!-- News feed -->
     <div class="newsfeed">

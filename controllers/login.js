@@ -121,6 +121,20 @@ class Login{
         
             })
     }
+
+    allUsersParam(req,res){
+        let req_title=req.url.split('/')
+        let title=''
+        if(req_title[1]=='follower'){
+            title='Followers'
+        }else{
+            title='Followings'
+        }
+        const ids=req.params.ids.split(',')
+        User.find().where('_id').in(ids).select('name bio image followers following name gender dateOfBirth').exec((err, records) => {
+            res.render('users',{title: title,data: records})
+        });
+    }
      
     settings(req,res){
         

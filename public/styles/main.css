@@ -12,8 +12,7 @@ a {
 }
 .user_info{
     position: relative;
-    background-image: linear-gradient( #0F2027,#203A43,#2C5364);
-    border-radius: 2%;
+    max-width: 25vw;
 }
 .user_image{ 
     display:block;
@@ -28,14 +27,28 @@ a {
 }
 .user_name{
     text-align: center;
-    font-family: "Montserrat", sans-serif;
-    font-size: 1.7rem;
+    font-family: 'Hachi Maru Pop', cursive;
+    font-size: 2rem;
     word-wrap: break-word;
+    color: rgba(0, 0, 0, 0.932);
 }
+.bio{
+    font-family: 'Quattrocento', serif;
+    white-space: nowrap;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.6rem;
+    color: rgb(150, 102, 0);
+}
+
 .user_info_bar {
     display: flex;
     justify-content: space-around;
     padding:0
+}
+.user_info_bar li {
+    color: #000;
 }
 .user_info_bar li a:hover{
     color: rgb(255, 0, 0);
@@ -44,7 +57,9 @@ a {
     text-align: center;
 }
 .user_friends li{
-    font-size: 1.3rem;
+    font-size: 1.7rem;
+    color: black;
+    font-family: 'Yeon Sung', cursive;
 }
 .user_friends hr{
     width: 85%;
@@ -52,18 +67,28 @@ a {
     margin-right: auto;
     margin-left: auto;
 }
-.user_settings{
+.user_viwe_profile{
+    color: #000;
     position: absolute;
     bottom: 10px;
     right: 1px;
     width: 100%;
     text-align: center;
   }
-.user_settings a{
-    font-size: 1.4rem;
+.user_viwe_profile a{
+    font-family: 'Quattrocento', serif;
+    font-size: 1.8rem;
+}
+.user_viwe_profile a:hover{
+    color: rgb(92, 4, 4);
+    font-weight: 900;
 }
 .suggestions{
     display: flex;
+    justify-content: center;
+}
+#online{
+    font-size: 1.4rem;
 }
 .newsfeed{
     flex-grow: 2;
@@ -85,7 +110,7 @@ a {
     top: 15px;
     height: 100%;
 }
-.friends{
+/* .friends{
     width: 250px;
 }
 .friends_list{
@@ -109,4 +134,4 @@ a {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-}
+} */

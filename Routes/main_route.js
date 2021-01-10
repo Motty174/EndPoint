@@ -1,7 +1,7 @@
 const fs=require('fs')
 const {Router} = require('express')
 const {register}=require('../controllers/register')
-const {login,searchUser,allUsers,singleUser,settings}=require('../controllers/login')
+const {login,searchUser,allUsers,singleUser,allUsersParam,settings}=require('../controllers/login')
 const {tokenChecker,deleteMyToken}=require('../controllers/tokens')
 const User = require('../Models/user')
 const multer=require('multer')
@@ -75,6 +75,8 @@ route
                                                     followers: req.user.followers,
                                                     following: req.user.following})
 })
+.get( '/followers/:ids',allUsersParam)
+.get( '/following/:ids',allUsersParam)
 .post( '/follow' , tokenChecker,(req,res) => {
     User.findByIdAndUpdate(req.user._id,{$push: {"following": req.body.id}},(err,myUser)=>{
         if(err){

@@ -1,10 +1,10 @@
 <%- include ('components/header') %>
 
 <link rel="stylesheet" href="/styles/users.css">
-<h1 class="text-center">Users</h1>
+<h1 class="text-center"><%= title %></h1>
 <div class="users_list"> 
     <% data.forEach(elem => { %>
-            <div class="card m-2 text-center" style=" width: 18rem;height: 30rem;">
+            <div class="card m-2 text-center" style=" width: 17rem;height: 30rem;">
                 <img class="card-img-top" alt="User image" style="margin: auto; width: 100%;max-width: 150px;height: 10rem;" src=<%= elem.image %> >
                 <div class="card-body">
                   <h3 class="card-title"><%= elem.name %></h3>
