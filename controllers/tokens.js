@@ -17,7 +17,7 @@ const uniqueId=guid.create().value
         unique_id: uniqueId
     }
     
-    const accessToken=jwt.sign(payload,secret_access,{expiresIn:7})
+    const accessToken=jwt.sign(payload,secret_access,{expiresIn:3600})
     // Refresh Token
     const salt=bcrypt.genSaltSync(10)
     const newRefreshHash=bcrypt.hashSync(accessToken,salt)
