@@ -1,4 +1,8 @@
-
+const arr=document.getElementsByClassName('header_search')
+console.log(arr)
+arr[0].oninput=(eve)=>{
+    alert(1)
+}
 document.getElementById('header_search').oninput=(e) => {
     e.preventDefault()
     const search_value = {
