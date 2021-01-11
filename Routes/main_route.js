@@ -46,7 +46,7 @@ route
   login( req, res )
 })
 
-.get( '/deleteMyCookie' , (req,res) => {
+.get( '/deleteMyCookie',tokenChecker, (req,res) => {
     deleteMyToken(req,res)
 })
 
@@ -58,7 +58,7 @@ route
     settings(req,res)
 }) 
 
-.post( '/searchForUser' , (req,res) => {
+.post( '/searchForUser' ,tokenChecker ,(req,res) => {
     searchUser(req,res)
 })
 
@@ -118,7 +118,9 @@ event_1.on( 'confirm' , data =>{
                     email:  data.user.email.toLowerCase(),
                     password: data.user.password,
                     dateOfBirth: valid.toDate(data.user.date),
-                    gender : data.user.gender
+                    gender : data.user.gender,
+                    
+                    
                    }
                 
                 newUser.password=bcrypt.hashSync( newUser.password, Password_Salt ) 
