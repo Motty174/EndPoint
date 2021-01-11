@@ -54,6 +54,7 @@ socket.on('post_get',value => {
                 post_info.appendChild(name_and_date)
 
                 let context = document.createElement('p')
+                context.setAttribute('style','word-break: break-all; word-wrap: break-word;')
                 context.classList.add('m-4')
                 context.innerText = value.post_text
                 post_info.appendChild(context)
