@@ -4,7 +4,11 @@ const {register}=require('../controllers/register')
 const {login,searchUser,allUsers,singleUser,allUsersParam,settings}=require('../controllers/login')
 const {tokenChecker,deleteMyToken}=require('../controllers/tokens')
 const User = require('../Models/user')
-const multer=require('multer')
+const multer = require('multer')
+const event_1 = require('../app')
+const valid = require('validator').default
+const bcrypt = require('bcrypt')
+const {Password_Salt}=require('../config/keys')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -18,6 +22,8 @@ const storage = multer.diskStorage({
 const upload=multer({storage: storage})
 const path=require('path')
 
+//Confirm adress
+let adr=''
 
 const route = Router()
 
@@ -29,7 +35,7 @@ route
         res.render( 'main' , {data: req.user,title: "Hooks"})
 }) 
 .get( '/login' ,tokenChecker, (req,res) => {
-    res.render('login',{title: "Welcome to Hooks"})
+    res.render('login',{title: "Welcome to Hooks", success: ''})
 })
 
 .post( '/register' , (req,res) => {
@@ -102,6 +108,29 @@ route
             return res.json({success: "Deleted", followers: myUser.followers, following: myUser.following})
         })
     })
+})
+
+event_1.on( 'confirm' , data =>{
+    console.log(data)
+   route.get( `/confirm/${data.adress}`, (req,res) => {
+        const newUser={
+                    name:  data.user.name,
+                    email:  data.user.email.toLowerCase(),
+                    password: data.user.password,
+                    dateOfBirth: valid.toDate(data.user.date),
+                    gender : data.user.gender
+                   }
+                
+                newUser.password=bcrypt.hashSync( newUser.password, Password_Salt ) 
+                
+                User.create( newUser )
+                .then( data => {
+            
+                    return res.render('login',{title: "Welcome to Hooks", success: "Your email has been verified.Now you can log in."})
+            
+                })
+                .catch( err => res.status(423).send('User already exits.') )
+    })  
 })
 
 module.exports = route

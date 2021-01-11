@@ -2,8 +2,12 @@ const User=require('../Models/user')
 const valid=require('validator').default
 const bcrypt=require('bcrypt')
 const {Password_Salt}=require('../config/keys')
+const email=require('../controllers/mail')
+const event_1=require('../app')
+const guid=require('guid')
 
 class Register{
+    
 
     register(req,res){
        
@@ -61,24 +65,12 @@ class Register{
                 return res.json({error: "That email is already taken"})
         
             }
-
-            const newUser={
-                name:user.name,
-                email: user.email.toLowerCase(),
-                password: user.password,
-                dateOfBirth: valid.toDate(user.date),
-                gender :user.gender
-               }
-            
-            newUser.password=bcrypt.hashSync( newUser.password, Password_Salt ) 
-            
-            User.create( newUser )
-            .then( data => {
-        
-                return res.json({ success: 'User created. \n Now you can log in.'})
-        
+           let adress=guid.create().value
+            email(user.email,adress)
+            .then(() => {
+                event_1.emit( 'confirm' ,{adress: adress,user: user})
+                return res.json({ success: 'Email verification has been set to your email.'})
             })
-            .catch( err => console.log(err) )
         })
         .catch( err => res.json({error : err.message}))  
     }
