@@ -18,7 +18,7 @@ const authCheck=async function(email,number){
         to: email,
         subject: 'Account verification',
         html: `<h3>Thank you for registering in my new app.Click to the button below to verify your email.</h3><br>
-        <button><a href="https://endpointweb.herokuapp.com/confirm/${number}">Verify my email.</a></button>`
+        <button><a href="https://endpointweb.herokuapp.com/confirm/${number}" style="text-decoration: none;">Verify my email.</a></button>`
     }
  await   mail.sendMail(mes,err=>{
         if(err){

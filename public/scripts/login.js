@@ -23,7 +23,7 @@ event.preventDefault()
     name : document.getElementById('name').value,
     date : document.getElementById('date').value,
     gender : document.getElementById('gender').value,
-    email : document.getElementById('email').value,
+    email : document.getElementById('email').value.toLowerCase(),
     password : document.getElementById('password').value,
     password2 : document.getElementById('password2').value
 }
@@ -106,7 +106,7 @@ document.getElementById('login').onsubmit = (event)=>{
     const errorHandle=document.getElementById('login_error')
     errorHandle.innerText=''
     const user={
-        email: document.getElementById('email_login').value,
+        email: document.getElementById('email_login').value.toLowerCase(),
         password: document.getElementById('password_login').value
     }
     if(!user.email || !user.password){
