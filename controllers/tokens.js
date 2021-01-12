@@ -47,8 +47,7 @@ async function tokenChecker(req,res,next){
            
         try{
             const decodedAccess = jwt.verify(req.signedCookies.tokens.accessToken,secret_access)
-            req.user=await User.findById(decodedAccess._id,{password:0}) 
-           
+            req.user=await User.findById(decodedAccess._id,{password:0}).populate('posts') 
             next()
         }catch(err){
            

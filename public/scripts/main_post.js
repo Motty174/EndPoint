@@ -1,5 +1,7 @@
 const socket= io()
 //Online users
+
+
 socket.on('online_count', value => {
     document.getElementById('online').innerText='Online: ' + value
 })
@@ -9,12 +11,14 @@ socket.on('online_count', value => {
 document.getElementById('main_post').onsubmit= (event) => {
     event.preventDefault()
     const data={
-    post_text: document.getElementById('textarea_post').value,
-    user_name: document.getElementById('user_name').innerText,
-    user_image: document.getElementById('user_image').src,
-    user_id: document.getElementById('current_user_id').innerText,
-    date: new Date()
+        post_text: document.getElementById('textarea_post').value,
+        user_name: document.getElementById('user_name').innerText,
+        user_image: document.getElementById('user_image').src,
+        user_id: document.getElementById('current_user_id').innerText,
+        date: new Date(),
+        followers_list : document.getElementById('followers_list').innerText.split(',')
     }
+
     socket.emit('post',data)
     document.getElementById('textarea_post').value=""  
 }
@@ -25,15 +29,15 @@ socket.on('post_get',value => {
     let post = document.createElement('div')
     post.classList.add('text-black','d-flex','border','border-outline-primary','p-3')
         //Image 
-                let image = document.createElement('img')
-                image.src = value.user_image
-                image.classList.add('p-2','border','border-outline-dark')
-                image.onclick=(e) =>{
-                    location.replace(`/users/${value.user_id}`)
-                }
-                image.setAttribute('style','width:50px;height:50px;border-radius: 50%;cursor: pointer;')
-                post.appendChild(image)
-    
+                let location_replace=document.createElement('a')
+                location_replace.href=`/users/${value.user_id}`
+                    let image = document.createElement('img')
+                    image.src = value.user_image
+                    image.classList.add('p-2','border','border-outline-dark')
+                    image.setAttribute('style','width:50px;height:50px;border-radius: 50%;cursor: pointer;')
+                   
+                location_replace.appendChild(image)
+                post.appendChild(location_replace)
         //Posting info
         let post_info=document.createElement('div')
         post_info.classList.add('d-flex','flex-column','p-0','m-0','w-100')

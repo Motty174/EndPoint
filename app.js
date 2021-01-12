@@ -5,7 +5,8 @@ const cookieParser=require('cookie-parser')
 const expressEjsLayouts = require('express-ejs-layouts')
 const helmet=require('helmet') 
 const rateLimit=require('express-rate-limit') 
-const Chat=require('./Models/main_chat')
+const Post = require('./Models/post')
+const User = require('./Models/user')
 const config=require('./config/keys')
 const {EventEmitter}=require('events')
 
@@ -14,7 +15,6 @@ const server=require('http').Server(app)
 const io=require('socket.io')(server)
 const event_1=new EventEmitter()
 module.exports=event_1
-
 
 //Mongoose settings
 mongoose.set('useNewUrlParser', true);
@@ -65,7 +65,29 @@ io.on('connection',socket=>{
 
     //Listening on post
     socket.on('post',value => {
-        io.emit('post_get',value)
+        
+        const post={
+            text: value.post_text,
+            user_name: value.user_name,
+            user_image: value.user_image,
+            user_id: value.user_id,
+            date: value.date,
+        }
+       
+        const ids=value.followers_list.concat([post.user_id]).filter(item => item.length>1)
+       
+        Post.create(post,(err,data)=>{
+            if(err) throw err
+         
+            User.update({ _id: { $in: ids } },
+                { $push: { posts : data._id } },
+                {multi: true} , err => {
+                    if(err) throw err
+                    console.log('Post saved for all clients')
+                })
+            io.emit('post_get',value)
+        })
+        
     })
 
     socket.on('typing',()=>{

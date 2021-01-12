@@ -1,4 +1,7 @@
 const nodemailer=require('nodemailer')
+const local='https://endpointweb.herokuapp.com/'
+// const local='http://localhost:8080/'
+
 
 const authCheck=async function(email,number){
 
@@ -18,7 +21,7 @@ const authCheck=async function(email,number){
         to: email,
         subject: 'Account verification',
         html: `<h3>Thank you for registering in my new app.Click to the button below to verify your email.</h3><br>
-        <button><a href="https://endpointweb.herokuapp.com/confirm/${number}" style="text-decoration: none;">Verify my email.</a></button>`
+        <button><a href="${local}confirm/${number}" style="text-decoration: none;">Verify my email.</a></button>`
     }
  await   mail.sendMail(mes,err=>{
         if(err){
