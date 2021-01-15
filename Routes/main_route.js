@@ -57,6 +57,9 @@ route
 .get( '/followers/:id', tokenChecker, main_controller.followersList)
 
 .get( '/followings/:id' , tokenChecker, main_controller.followingsList)
+
+.get( '/allposts/:id', tokenChecker, main_controller.allPosts)
+
 event_1.on( 'confirm' , data =>{
   
     route.get( `/confirm/${data.adress}`,(req,res,next)=>{

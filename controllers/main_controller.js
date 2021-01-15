@@ -161,30 +161,32 @@ class MainController{
 
     }
 
+    allPosts(req,res){
+            const id=req.params.id
+        Post.find({permission: id},(err,data) =>{
+            return res.json(data)
+        })
+
+    }
+
   async savePost(value){
+        
+        const followers =await Follow.find({followingId: value.user_id},{followerId:1, _id:0})
+        const ids = followers.map(elem => elem.followerId)
+        ids.push(value.user_id)
+
         const post={
             text: value.post_text,
             user_name: value.user_name,
             user_image: value.user_image,
             user_id: value.user_id,
             date: value.date,
+            permission: ids,
         }
-       
-        const followers =await Follow.find({followingId: value.user_id},{followerId:1, _id:0})
-        const ids = followers.map(elem => elem.followerId)
-        ids.push(value.user_id)
-        console.log(ids)
-
        Post.create(post,(err,data)=>{
             if(err) throw err
-         
-            User.update({ _id: { $in: ids } },
-                { $push: { posts : data._id } },
-                {multi: true} , err => {
-                    if(err) throw err
-                    console.log('Post saved for all clients')
-                })})
-                console.log(1)
+         console.log(data)
+        })
     }
 
 

@@ -3,7 +3,7 @@ const send_btn=document.getElementById('send')
 const text=document.getElementById('text')
 const my_id=document.getElementById('myInfo').innerText
 const my_image=document.getElementById('myImage').innerText
-console.log(my_image)
+
 
 const rooms=[]
 let currentRoom;
@@ -66,10 +66,6 @@ socket.on( 'broadcast' ,(data) => {
     document.getElementById( 'message_list' ).append( newLi )   
    
     document.getElementById( 'chat_main_place' ).scrollTo( 0,document.getElementById('chat_main_place').scrollHeight)
-})
-
-socket.on('hi',()=>{
-    console.log('Hi')
 })
 
 

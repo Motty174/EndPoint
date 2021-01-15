@@ -27,7 +27,6 @@ const user=mongoose.Schema({
         required: true
     },
     image:{type: String,default: '/images/user.png'},
-    posts: [{type: mongoose.Types.ObjectId, ref: 'Post'}]
-})
+  })
 const User=mongoose.model( 'User' , user )
 module.exports=User

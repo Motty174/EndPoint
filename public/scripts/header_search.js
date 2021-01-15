@@ -1,6 +1,5 @@
 const arr=document.querySelectorAll('input')
 
-console.log(arr)
 arr.forEach(elem => {
 
 elem.addEventListener('input', (e) => {
@@ -14,7 +13,7 @@ elem.addEventListener('input', (e) => {
     fetch(`${local_host}searchForUser/${search_value.name}`)
     .then(res => res.json() )
     .then(data => {
-        
+
         if(screen.width>800){
 
                     document.getElementById('found_users').innerHTML=""
@@ -27,7 +26,6 @@ elem.addEventListener('input', (e) => {
                         document.getElementById('found_users').append(found_user)
                  
                     }else{
-                        console.log(data.array)
                  
                     data.array.forEach((element) => {
                         const found_user=document.createElement('li')

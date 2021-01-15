@@ -8,6 +8,7 @@ const post = mongoose.Schema({
     user_image: String,
     user_id: String,
     date: String,
+    permission: [{type: mongoose.Types.ObjectId, ref: 'User'}],
     likes: [{type: mongoose.Types.ObjectId, ref: 'User'}],
     comment: [{type: mongoose.Types.ObjectId, ref: 'User'}],
     share: [{type: mongoose.Types.ObjectId, ref: 'User'}]

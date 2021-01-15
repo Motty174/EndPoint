@@ -14,7 +14,7 @@ if(user_id==following_id){
 fetch(`${local_host}checkForFollow/${user_id}/${following_id}`)
 .then(res => res.json())
 .then(result => {
-    console.log(result)
+    
     if(result.following==true){
 
         following=true
@@ -38,8 +38,8 @@ fetch(`${local_host}checkForFollow/${user_id}/${following_id}`)
 follow.onclick = function(event){
     
     event.preventDefault()
-    console.log(follow.innerText)
-        if(following==false){
+    
+    if(following==false){
             
             fetch(`${local_host}follow/${user_id}/${following_id}`)
             .then(res => res.json() )
@@ -61,7 +61,7 @@ follow.onclick = function(event){
             .then( result => {
                 
                 following=false
-                console.log(result)
+             
                 follow.innerText='Follow'
             
                 follow.classList.remove('btn-danger')
