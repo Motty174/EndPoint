@@ -1,6 +1,6 @@
 const {Router} = require('express')
 const {register}=require('../controllers/register')
-const {login,searchUser,allUsers,singleUser,allUsersParam,settings}=require('../controllers/login')
+const {login,allUsers,singleUser,settings}=require('../controllers/login')
 const {tokenChecker,deleteMyToken}=require('../controllers/tokens')
 const main_controller=require('../controllers/main_controller')
 const multer = require('multer')
@@ -38,7 +38,7 @@ route
 
 .post( '/settings' , tokenChecker, upload.single('image') , settings) 
 
-.post( '/searchForUser' ,tokenChecker , searchUser )
+.get( '/searchForUser/:name' ,tokenChecker , main_controller.searchUser )
 
 .get( '/messages' ,tokenChecker, main_controller.message_render)
 
@@ -46,14 +46,17 @@ route
 
 .get( '/users/:id', singleUser , tokenChecker, main_controller.users_by_id)
 
-.get( '/followers/:ids',tokenChecker,allUsersParam)
+.get( '/followerInfo/:id' , tokenChecker, main_controller.followerInfo)
 
-.get( '/following/:ids',tokenChecker,allUsersParam)
+.get( '/follow/:myId/:followId' , tokenChecker, main_controller.follow)
 
-.post( '/follow' , tokenChecker, main_controller.follow)
+.get( '/unfollow/:myId/:followId' ,tokenChecker, main_controller.unfollow)
 
-.post( '/unfollow' ,tokenChecker, main_controller.unfollow)
+.get( '/checkForFollow/:myId/:followId' , tokenChecker , main_controller.check_for_follow)
 
+.get( '/followers/:id', tokenChecker, main_controller.followersList)
+
+.get( '/followings/:id' , tokenChecker, main_controller.followingsList)
 event_1.on( 'confirm' , data =>{
   
     route.get( `/confirm/${data.adress}`,(req,res,next)=>{

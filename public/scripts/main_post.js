@@ -9,15 +9,16 @@ socket.on('online_count', value => {
 
 //Post event
 document.getElementById('main_post').onsubmit= (event) => {
+    
     event.preventDefault()
+    
     const data={
         post_text: document.getElementById('textarea_post').value,
         user_name: document.getElementById('user_name').innerText,
         user_image: document.getElementById('user_image').src,
         user_id: document.getElementById('current_user_id').innerText,
         date: new Date(),
-        followers_list : document.getElementById('followers_list').innerText.split(',')
-    }
+      }
 
     socket.emit('post',data)
     document.getElementById('textarea_post').value=""  

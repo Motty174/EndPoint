@@ -63,29 +63,6 @@ class Login{
             .catch(err => res.json({ error : err.message }))
     }
     
-    searchUser(req,res){
-        
-        const user_name = req.body.name
-        const regex = new RegExp(user_name, 'gi')
-        
-        User.find({ name: regex},{name: 1},(err,data) => {
-            
-            if(err){
-              
-                return res.sendStatus(404)
-            
-            }else if( !data ){
-                
-                return res.json({ name: 'Not found' })
-            
-            }else{
-               
-                return res.json({ array: data})
-            
-            }
-        })
-    }
-    
     allUsers(req,res,next){
 
         User.find( {}, {password:0}, (err,data) => {
@@ -122,23 +99,6 @@ class Login{
             })
     }
 
-    allUsersParam(req,res){
-        let req_title=req.url.split('/')
-        let title=''
-        if(req_title[1]=='followers'){
-            title='Followers'
-        }else{
-            title='Followings'
-        }
-        if(req.params.ids==0){
-            return res.render('users',{title: title,data: 0,error: `No ${title} found.`})
-        }
-        const ids=req.params.ids.split(',')
-        User.find().where('_id').in(ids).select('name bio image followers following name gender dateOfBirth').exec((err, records) => {
-            res.render('users',{title: title,data: records})
-        });
-    }
-     
     settings(req,res){
         
         if( req.file!=undefined ){

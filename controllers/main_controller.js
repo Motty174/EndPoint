@@ -4,6 +4,8 @@ const User = require('../Models/user')
 const bcrypt = require('bcrypt')
 const valid = require('validator').default
 const {Password_Salt}=require('../config/keys')
+const Follow= require('../Models/follow')
+const Post = require('../Models/post')
 
 
 class MainController{
@@ -13,7 +15,8 @@ class MainController{
         if(!fs.existsSync(path.join(__dirname,`../public/uploads/${req.user._id}`))){
                fs.mkdirSync(path.join(__dirname,`../public/uploads/${req.user._id}`))
            }
-         return  res.render( 'main' , {data: req.user,title: "Hooks"})
+       
+        return  res.render( 'main' , {data: req.user,title: "Hooks"})
     
         }
 
@@ -29,9 +32,12 @@ class MainController{
         
     }
 
-    message_render(req,res){
-            const ids=req.user.followers.concat(req.user.following) 
-            // Not working should install babel.Look !!!!!!=========
+    async message_render(req,res){
+       const followers=await Follow.find({followingId: req.user._id},{followerId: 1, _id:0})
+       const newFollowersList=followers.map(elem => elem.followerId)
+            const ids=newFollowersList.concat(req.user._id) 
+            console.log(ids)
+            // Not working should install babel. Look !!!!!!=========
             // const newIds=[...new Set(ids)]
             User.find().select('name image ').where('_id').in(ids).exec((err, records) => {
              if(err){
@@ -50,42 +56,137 @@ class MainController{
     
     users_by_id(req,res){
       
-        res.render('user',{title: req.foundUser.name+' | Hooks',data: req.foundUser,id: req.user._id,
-                                                            followers: req.user.followers,
-                                                            following: req.user.following})
+        res.render('user',{title: req.foundUser.name+' | Hooks',
+                        data: req.foundUser,
+                        id: req.user._id})
         
+    }
+    
+    check_for_follow(req,res){
+        Follow.findOne({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
+            if(err){
+                return res.status(500).send('Server error occured')
+            }
+            if(!data){
+                return res.json({following: false})
+            }
+            return res.json({following: true})
+        })
     }
 
     follow(req,res){
         
-        User.findByIdAndUpdate(req.user._id,{$push: {"following": req.body.id}},(err,myUser)=>{
-                if(err){
-                    return res.statusCode(500)
-                }
-                User.findByIdAndUpdate(req.body.id, {$push: {"followers" : req.user._id}},(err,data) => {
-                    if(err){
-                        return res.statusCode(500)
-                    }
-                    return res.json({success: 'Added',followers: myUser.followers,following: myUser.following })
-                })  
-            })    
+        if(req.params.myId==req.params.followId){
+            return res.json({error: "Cant follow or unfollow to this id"})
+        }
+        
+        Follow.findOne({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
+            if(err){
+                return res.status(500).send('Server error occured')
+            }
+           if(data){
+                return res.json({following: false,text: 'Cant follow because exists'})
+            }
+           
+        Follow.create({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
+            if(err) throw err
+            return res.json({follow:true,data: data})
+        })
+
+       }) 
     }
 
     unfollow(req,res){
-       
-        User.findByIdAndUpdate(req.user._id, {$pull: {"following" :req.body.id}},(err,myUser) => {
+        
+        if(req.params.myId==req.params.followId){
+            return res.json({error: "Cant follow or unfollow to this id"})
+        }
+
+        Follow.findOne({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
             if(err){
-                return res.statusCode(500)
+                return res.status(500).send('Server error occured')
             }
-            User.findByIdAndUpdate(req.body.id, {$pull: {"followers": req.user._id}},(err,data) =>{
-                if(err){
-                    return res.statusCode(500)
+           if(!data){
+                return res.json({following: false,text: 'Cant unfollow because does not exist'})
+            }
+       Follow.deleteOne({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
+           if(err) throw err
+           return res.json({follow: false,data: data})
+       })
+     })
+    }
+
+    followerInfo(req,res){
+        const id = req.params.id
+        Follow.find({followerId: id},(err,followings) => {
+            if(err) {
+                return res.sendStatus(500)
+            }
+
+            Follow.find({followingId: id},(err,followers) => {
+                if(err) {
+                    return res.sendStatus(500)
                 }
-                return res.json({success: "Deleted", followers: myUser.followers, following: myUser.following})
+                return res.json({followers,followings})
             })
         })
-    
     }
+
+    
+    followersList(req,res){
+        const id = req.params.id
+        Follow.find({followingId: id}).populate("followerId").exec((err,data) => {
+        if(err) throw err
+        data=data.map(elem => elem.followerId)
+        if(data.length==0){
+            data=0
+        }
+        return res.render('users',{title: "Followers list",data: data, error: "No followers found."})
+        
+        })
+
+    }
+
+    followingsList(req,res){
+            const id = req.params.id
+        Follow.find({followerId: id}).populate("followingId").exec((err,data) => {
+            if(err) throw err
+           data=data.map(elem => elem.followingId)
+            if(data.length==0){
+                data=0
+            }
+            return res.render('users',{title: "Followings list",data: data, error: "No followings found."})
+            
+        })
+
+    }
+
+  async savePost(value){
+        const post={
+            text: value.post_text,
+            user_name: value.user_name,
+            user_image: value.user_image,
+            user_id: value.user_id,
+            date: value.date,
+        }
+       
+        const followers =await Follow.find({followingId: value.user_id},{followerId:1, _id:0})
+        const ids = followers.map(elem => elem.followerId)
+        ids.push(value.user_id)
+        console.log(ids)
+
+       Post.create(post,(err,data)=>{
+            if(err) throw err
+         
+            User.update({ _id: { $in: ids } },
+                { $push: { posts : data._id } },
+                {multi: true} , err => {
+                    if(err) throw err
+                    console.log('Post saved for all clients')
+                })})
+                console.log(1)
+    }
+
 
     confirm_user(req,res){
         const newUser={
@@ -107,6 +208,30 @@ class MainController{
                     .catch( err => res.status(423).send('User already exits.') )
         
     }
+
+    searchUser(req,res){
+
+        const user_name = req.params.name
+        const regex = new RegExp(user_name, 'gi')
+        
+    User.find({ name: regex},{name: 1},(err,data) => {
+            
+            if(err){
+              
+                return res.sendStatus(404)
+            
+            }else if( !data ){
+                
+                return res.json({ name: 'Not found' })
+            
+            }else{
+               
+                return res.json({ array: data})
+            
+            }
+        })
+    }
+    
 }
 
 module.exports=new MainController()

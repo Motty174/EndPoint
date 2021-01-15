@@ -8,18 +8,14 @@ elem.addEventListener('input', (e) => {
     const search_value = {
         name: arr[0].value || arr[1].value
     }
-    fetch(`${local_host}searchForUser`,{
-        method: "POST",
-        headers: {
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify(search_value)
-    })
+   
+    document.getElementById('found_users').innerHTML=""
+
+    fetch(`${local_host}searchForUser/${search_value.name}`)
     .then(res => res.json() )
     .then(data => {
-        console.log(data)
-        setTimeout(()=>{
-                if(screen.width>800){
+        
+        if(screen.width>800){
 
                     document.getElementById('found_users').innerHTML=""
        
@@ -31,6 +27,7 @@ elem.addEventListener('input', (e) => {
                         document.getElementById('found_users').append(found_user)
                  
                     }else{
+                        console.log(data.array)
                  
                     data.array.forEach((element) => {
                         const found_user=document.createElement('li')
@@ -69,6 +66,6 @@ elem.addEventListener('input', (e) => {
                     })}
                 }
 
-        },400)})
+        })
 })
 })

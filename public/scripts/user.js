@@ -1,90 +1,75 @@
-
+let following=false
 const follow = document.getElementById('follow')
-const following_id = document.querySelector('h5').id
-const x = document.getElementById('info').innerHTML
-const spliting=x.split('|')
+const following_id = document.querySelector('h5').id //User id
 
-const user = {
-    id: spliting[1],
-    followers: spliting[3].split(','),
-    following: spliting[5].split(',')
-}
+const user_id = document.getElementById('info').innerHTML //myId
 
-if( user.following.includes(following_id) ){
-    
-    follow.innerText="Unfollow"
+function userCheck(){
 
-    follow.classList.remove('btn-success')
-
-    follow.classList.add('btn-danger')
-
-}
-
-if( user.id==following_id ){
-
+if(user_id==following_id){
     follow.remove()
-
+    return false
 }
+
+fetch(`${local_host}checkForFollow/${user_id}/${following_id}`)
+.then(res => res.json())
+.then(result => {
+    console.log(result)
+    if(result.following==true){
+
+        following=true
+        follow.innerText='Unfollow'
+            
+        follow.classList.remove('btn-success')
+        
+        follow.classList.add('btn-danger')
+    }else{
+            following=false
+        follow.innerText='Follow'
+            
+        follow.classList.remove('btn-danger')
+        
+        follow.classList.add('btn-success')
+
+    }
+  })
+
 
 follow.onclick = function(event){
     
     event.preventDefault()
-    
-    const body={
-        id: document.querySelector('h5').id
-    }
-    
-    if( !user.following.includes(document.querySelector('h5').id )){   
-       
-        fetch(`${local_host}follow`,{
-        
-        method: "POST",
-        
-        headers:{
-            "Content-Type":"application/json"
-        },
-        
-        body: JSON.stringify(body)
-    })
-    .then(res => res.json())
-    .then(data => {
-        if( data.success ){
+    console.log(follow.innerText)
+        if(following==false){
+            
+            fetch(`${local_host}follow/${user_id}/${following_id}`)
+            .then(res => res.json() )
+            .then(result => {
 
-            user.following.push(following_id)
-            
-            follow.innerText='Unfollow'
-            
-            follow.classList.remove('btn-success')
-            
-            follow.classList.add('btn-danger')
-        
-        }
-    })
-    }else{
-        fetch(`${local_host}unfollow`,{
-           
-            method: "POST",
-            
-            headers:{
-                "Content-Type":"application/json"
-            },
-            
-            body: JSON.stringify(body)
-        })
-        .then(res => res.json())
-        .then(data => {
-            
-            if( data.success ){
+                following=true
+                console.log(result)
                 
-                user.following.splice(user.followers.indexOf(following_id),1)
+                follow.innerText='Unfollow'
+            
+                follow.classList.remove('btn-success')
                 
+                follow.classList.add('btn-danger')
+
+            })
+        }else{
+            fetch(`${local_host}unfollow/${user_id}/${following_id}`)
+            .then( res => res.json() )
+            .then( result => {
+                
+                following=false
+                console.log(result)
                 follow.innerText='Follow'
-                
+            
                 follow.classList.remove('btn-danger')
                 
                 follow.classList.add('btn-success')
-                
-            }
-        })       
+            })
+        }
+
     }
 }
+userCheck()

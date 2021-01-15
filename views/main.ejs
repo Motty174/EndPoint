@@ -16,18 +16,10 @@
                 <hr>
             <ul class="user_friends p-0 m-0">
                 <li >Followers</li>
-                <% if(data.followers.length!=0){ %>
-                <li><a href="/followers/<%= data.followers %>" ><%= data.followers.length %></a></li>
-                <% } else{ %>
-                <li><a href="/followers/0" ><%= data.followers.length %></a></li>
-                <% }%>    
+                <li><a href="/followers/<%= data._id %>" id="followers">0</a></li>
                 <hr>
                 <li >Following</li>
-                <% if(data.following.length!=0){ %>
-                <li><a href="/following/<%= data.following %>" ><%= data.following.length %></a></li>
-                <% } else{ %>
-                <li><a href="/following/0" ><%= data.following.length %></a></li>
-                <% }  %>
+                <li><a href="/followings/<%= data._id %>" id="following">0</a></li>
                 <hr>        
             </ul>
             <br>
@@ -89,5 +81,7 @@
 <button id="send">Send</button> -->
 <p hidden id="current_user_id"><%= data._id %></p>
 <p hidden id="followers_list"><%= data.followers %></p>
+<script src="/scripts/config.js"></script>
+<script src="/scripts/followerCheck.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/scripts/main_post.js"></script>
