@@ -11,7 +11,7 @@ const Post = require('../Models/post')
 class MainController{
 
     main(req,res){   
-        
+        console.log(req.user)
         if(!fs.existsSync(path.join(__dirname,`../public/uploads/${req.user._id}`))){
                fs.mkdirSync(path.join(__dirname,`../public/uploads/${req.user._id}`))
            }
