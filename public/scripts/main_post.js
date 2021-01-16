@@ -90,21 +90,24 @@ function createPostFunction(value,fromSocket){
                 comment.innerText='Comment'
                 comment.classList.add('btn','btn-outline-primary')
                 comment.addEventListener('click',function(){
-                        let doc=this
-                            commentFunction(value,commentField,doc)})
+                            let doc=this
+                            commentFunction(value,commentField,doc)
+                        })
                 controllers.appendChild(comment)
 
                 //Comment field 
                 let commentField=document.createElement('div')
                     commentField.classList.add("overlayForComments")
                     commentField.hidden=true
-                    
+                    // commentField.onclick=(e)=>{
+                    //     console.log(e.target)
+                    // }
                     
                     //X mark for closing 
-                    let xMark=document.createElement('div')
-                    xMark.innerHTML='<i class="fas fa-times fa-2x "></i>'
-                    xMark.classList.add('p-0','m-0','float-right')
-                    xMark.setAttribute('style','cursor: pointer;')
+                    let xMark=document.createElement('span')
+                    xMark.innerHTML='Close'
+                    xMark.classList.add('p-0','m-1','text-center','border','border-outline-light')
+                    xMark.setAttribute('style','cursor: pointer;color: white;')
                     xMark.onclick=function(){
                         commentField.hidden=true
                     }
@@ -113,42 +116,8 @@ function createPostFunction(value,fromSocket){
                     //Comments all
                     let commentsBlock=document.createElement('div')
                     commentsBlock.classList.add('p-0','m-0','text-center')
-                    commentsBlock.setAttribute('style','overflow:auto;width:100%;height:80vh;background-color:blue;')
-                    commentsBlock.innerText=`padding: 0;
-                    border: none;
-                    background: none;padding: 0;
-                    border: none;
-                    background: none;padding: 0;
-                    border: none;
-                    background: none;padding: 0;
-                    border: none;
-                    background: none;padding: 0;
-                    border: none;
-                    background: none;padding: 0;
-                    border: none;
-                    background: none;padding: 0;
-                    border: none;
-                    background: none;padding: 0;
-border: none;
-background: none;padding: 0;
-border: none;
-background: none;padding: 0;
-border: none;
-background: none;padding: 0;
-border: none;
-background: none;padding: 0;
-border: none;
-background: none;padding: 0;
-border: none;
-background: none;padding: 0;
-border: none;
-background: none;padding: 0;
-border: none;
-background: none;padding: 0;
-border: none;
-background: none;padding: 0;
-border: none;
-background: none;`
+                    commentsBlock.setAttribute('style','overflow:auto;width:100%;height:80vh;')
+                    commentsBlock.innerText=`Text`
                     commentField.appendChild(commentsBlock)
 
                     //Write comment
@@ -157,6 +126,7 @@ background: none;`
                         //Form for comment
                         let form=document.createElement('form')
                         form.classList.add('position-relative','p-0','m-0')
+                        
                             //Input
                             let inputDiv=document.createElement('div')    
                                 inputDiv.classList.add('position-relative')
@@ -174,6 +144,15 @@ background: none;`
                                 
                                 inputDiv.appendChild(button_send)
     
+                                form.addEventListener('submit',(e) => {
+                                    e.preventDefault()
+                                    if(inputField.value.trim().length==0){
+                                        return false
+                                    }
+                                    socket.emit('comment_written',controllers.id,myId,inputField.value)
+                                    inputField.value=""
+                                })
+
                                 form.appendChild(inputDiv)
                             //Button for sending
                             
@@ -243,10 +222,7 @@ socket.on('post_get',value => {
 function likeFunction(){
         socket.emit('like',myId,this.parentNode.id)
         //Adding one like
-        let currentLikesCount=this.parentNode.parentNode.nextSibling.children[1].innerHTML
-        
-        this.parentNode.parentNode.nextSibling.children[1].innerHTML=+currentLikesCount+1
-        
+    
         let button = this.parentNode.children[0]
         button.innerText="Forget"
         button.classList.remove('btn-outline-success')
@@ -254,13 +230,15 @@ function likeFunction(){
         button.removeEventListener('click',likeFunction)
         button.addEventListener('click',deleteLikeFunction)
     }
+socket.on('liked_post',(postId,data) => {
+ 
+    document.getElementById(postId).parentNode.nextSibling.children[1].innerHTML=data
+
+})
 
 function deleteLikeFunction(){
     socket.emit('deleteLike',myId,this.parentNode.id)
         //Adding one like
-        let currentLikesCount=this.parentNode.parentNode.nextSibling.children[1].innerHTML
-        
-        this.parentNode.parentNode.nextSibling.children[1].innerHTML=+currentLikesCount-1
         
         let button = this.parentNode.children[0]
         button.innerText="Like"
@@ -270,8 +248,64 @@ function deleteLikeFunction(){
         button.addEventListener('click',likeFunction)
 }
 
+socket.on('disLiked_post',(postId,data) => {
+    document.getElementById(postId).parentNode.nextSibling.children[1].innerHTML=data
+})
+
 function commentFunction(value,commentField,doc){
     
     doc.nextSibling.hidden=false
+    const comment_place = doc.parentNode.children[2].children[1]
+
+    fetch(`${local_host}postComments/${doc.parentNode.id}`)
+    .then(res => res.json())
+    .then(result => {
+       comment_place.innerHTML=""
+        result.forEach(comment => {
+       
+            commentTemplate(comment,comment_place)
+       
+        })
+    })
+}
+
+socket.on('comment_sending',comment =>{
+
+    comment.forEach(elem => {
+
+        const comment_place =document.getElementById(elem.postId).children[2].children[1]
+        commentTemplate(elem,comment_place)
+    })
+})
+
+function commentTemplate(comment,comment_place){
+    const commentBody=document.createElement('div')
+    commentBody.classList.add('d-flex','border','border-light','m-1','p-1')
+
+        const image=document.createElement('a')
+        image.href=`/users/${comment.user._id}`
+        image.classList.add('m-2')
+            const img=document.createElement('img')
+            img.src=`${comment.user.image}`
+            img.setAttribute('style','border-radius: 50%;width:40px;height:40px;')
+            image.appendChild(img)
+        commentBody.appendChild(image)
+
+        const commentTextBody = document.createElement('div')
+        commentTextBody.classList.add('d-flex','flex-column')
+
+            const name = document.createElement('p')
+            name.classList.add('text-light','float-left')
+            name.innerText = comment.user.name
+            commentTextBody.appendChild(name)
+
+            const comment_text = document.createElement('p')
+            comment_text.classList.add('text-light')
+            comment_text.setAttribute('style','word-break: break-all; word-wrap: break-word;')
+            comment_text.innerText = comment.text
+            commentTextBody.appendChild(comment_text)
     
+        commentBody.appendChild(commentTextBody)
+comment_place.appendChild(commentBody)
+comment_place.scrollTo( 0,comment_place.scrollHeight)
 }

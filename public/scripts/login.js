@@ -20,10 +20,10 @@ event.preventDefault()
     errorHandle.innerText=''
     
     const user={
-    name : document.getElementById('name').value,
+    name : document.getElementById('name').value.trim(),
     date : document.getElementById('date').value,
     gender : document.getElementById('gender').value,
-    email : document.getElementById('email').value.toLowerCase(),
+    email : document.getElementById('email').value.trim().toLowerCase(),
     password : document.getElementById('password').value,
     password2 : document.getElementById('password2').value
 }
@@ -106,7 +106,7 @@ document.getElementById('login').onsubmit = (event)=>{
     const errorHandle=document.getElementById('login_error')
     errorHandle.innerText=''
     const user={
-        email: document.getElementById('email_login').value.toLowerCase(),
+        email: document.getElementById('email_login').value.trim().toLowerCase(),
         password: document.getElementById('password_login').value
     }
     if(!user.email || !user.password){
@@ -126,11 +126,12 @@ document.getElementById('login').onsubmit = (event)=>{
     })
     .then(res => res.json() )
     .then(data => {
-        console.log(data)
+   
         if(data.error!=undefined){
            return  errorHandle.innerText=data.error
         }
-     return  location.replace('/') 
+  
+        return  location.replace('/') 
     })
     .catch(err => console.log(err))
     

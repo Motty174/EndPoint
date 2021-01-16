@@ -6,12 +6,12 @@ const valid = require('validator').default
 const {Password_Salt}=require('../config/keys')
 const Follow= require('../Models/follow')
 const Post = require('../Models/post')
-
+const Comment = require('../Models/comments')
 
 class MainController{
 
     main(req,res){   
-        console.log(req.user)
+     
         if(!fs.existsSync(path.join(__dirname,`../public/uploads/${req.user._id}`))){
                fs.mkdirSync(path.join(__dirname,`../public/uploads/${req.user._id}`))
            }
@@ -33,10 +33,11 @@ class MainController{
     }
 
     async message_render(req,res){
-       const followers=await Follow.find({followingId: req.user._id},{followerId: 1, _id:0})
-       const newFollowersList=followers.map(elem => elem.followerId)
+     
+            const followers=await Follow.find({followingId: req.user._id},{followerId: 1, _id:0})
+            const newFollowersList=followers.map(elem => elem.followerId)
             const ids=newFollowersList.concat(req.user._id) 
-            console.log(ids)
+         
             // Not working should install babel. Look !!!!!!=========
             // const newIds=[...new Set(ids)]
             User.find().select('name image ').where('_id').in(ids).exec((err, records) => {
@@ -171,6 +172,18 @@ class MainController{
 
     }
 
+   async postComments(req,res){
+        const postId = req.params.id
+        const comments = await Comment.find({postId: postId}).lean().populate('user',{name:1 ,image: 1})
+        return res.json(comments)
+    }
+
+    async addComment(postId,user,text){
+     
+      const data=  await  Comment.create({postId,user,text})
+        const comment=await Comment.find({_id: data._id}).lean().populate('user',{name:1 ,image: 1})
+        return comment
+    }
     //All about posts
 
   async savePost(value){
@@ -193,14 +206,14 @@ class MainController{
 
     async likePost(myId,postId){
     
-     await   Post.findByIdAndUpdate(postId,{$addToSet: {likes: myId}})
-    
+    const data= await   Post.findByIdAndUpdate(postId,{$addToSet: {likes: myId}})
+    return +data.likes.length +1
     }
 
     async deleteLikePost(myId,postId){
         
-        await Post.findByIdAndUpdate(postId,{$pull: {likes: myId}})
-
+     const data = await Post.findByIdAndUpdate(postId,{$pull: {likes: myId}})
+        return +data.likes.length-1
     }
 
     confirm_user(req,res){

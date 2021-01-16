@@ -46,7 +46,6 @@ follow.onclick = function(event){
             .then(result => {
 
                 following=true
-                console.log(result)
                 
                 follow.innerText='Unfollow'
             

@@ -75,13 +75,24 @@ io.on('connection',socket=>{
     socket.on('like',(myId,postId) => {
 
         main_controller.likePost(myId,postId)
+        .then(data => io.emit('liked_post',postId,data))
 
     })
 
     socket.on('deleteLike',(myId,postId) => {
 
         main_controller.deleteLikePost(myId,postId)
+        .then( data => io.emit('disLiked_post',postId,data))
 
+    })
+
+    socket.on('comment_written',(postId,user,text) => {
+        
+        if(text.trim().length==0){
+            return false
+        }
+        main_controller.addComment(postId,user,text)
+        .then(data => io.emit('comment_sending',data))
     })
 
     socket.on('typing',()=>{

@@ -60,6 +60,8 @@ route
 
 .get( '/allposts/:id', tokenChecker, main_controller.allPosts)
 
+.get( '/postComments/:id', tokenChecker, main_controller.postComments)
+
 event_1.on( 'confirm' , data =>{
   
     route.get( `/confirm/${data.adress}`,(req,res,next)=>{
