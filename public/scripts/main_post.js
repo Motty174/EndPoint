@@ -2,7 +2,7 @@
 const myId=document.getElementById('current_user_id').innerText
 
 //Function for creating posts
-function createPostFunction(value){
+function createPostFunction(value,fromSocket){
     //Main body
     let post = document.createElement('div')
     post.classList.add('text-black','d-flex','border','border-outline-primary','p-3')
@@ -191,6 +191,9 @@ background: none;`
 
         post_info.appendChild(controllers)
       
+     if(fromSocket){
+      return document.getElementById('post_handler').prepend(post)   
+     }
     document.getElementById('post_handler').append(post)
 
 }
@@ -232,8 +235,8 @@ document.getElementById('main_post').onsubmit= (event) => {
 }
 
 socket.on('post_get',value => {
-
-    createPostFunction(value)
+    const fromSocket=true
+    createPostFunction(value,fromSocket)
 
 })
 

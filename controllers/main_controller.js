@@ -163,7 +163,9 @@ class MainController{
 
     allPosts(req,res){
             const id=req.params.id
-        Post.find({permission: id},(err,data) =>{
+        Post.find({permission: id})
+        .sort({date: "desc"})
+        .exec((err,data) =>{
             return res.json(data)
         })
 
