@@ -63,13 +63,25 @@ io.on('connection',socket=>{
     
     //Online 
      io.emit('online_count',online.length)
-
+//All about posts
     //Listening on post
     socket.on('post',value => {
        
         main_controller.savePost(value)
-            io.emit('post_get',value)
+        .then(result => io.emit('post_get',result))
             
+    })
+
+    socket.on('like',(myId,postId) => {
+
+        main_controller.likePost(myId,postId)
+
+    })
+
+    socket.on('deleteLike',(myId,postId) => {
+
+        main_controller.deleteLikePost(myId,postId)
+
     })
 
     socket.on('typing',()=>{

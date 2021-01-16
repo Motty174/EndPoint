@@ -138,3 +138,17 @@ a {
     height: 40px;
     border-radius: 50%;
 } */
+ .overlayForComments {
+    position: fixed; /* Sit on top of the page content */
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 45vw; /* Full width (cover the whole page) */
+    height: 85vh; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(112, 112, 112, 0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    }

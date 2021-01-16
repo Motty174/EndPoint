@@ -10,7 +10,7 @@ const post = mongoose.Schema({
     date: String,
     permission: [{type: mongoose.Types.ObjectId, ref: 'User'}],
     likes: [{type: mongoose.Types.ObjectId, ref: 'User'}],
-    comment: [{type: mongoose.Types.ObjectId, ref: 'User'}],
+    comment: [{type: mongoose.Types.ObjectId, ref: 'Comment'}],
     share: [{type: mongoose.Types.ObjectId, ref: 'User'}]
 
 })

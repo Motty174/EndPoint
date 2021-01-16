@@ -169,6 +169,8 @@ class MainController{
 
     }
 
+    //All about posts
+
   async savePost(value){
         
         const followers =await Follow.find({followingId: value.user_id},{followerId:1, _id:0})
@@ -183,12 +185,21 @@ class MainController{
             date: value.date,
             permission: ids,
         }
-       Post.create(post,(err,data)=>{
-            if(err) throw err
-         console.log(data)
-        })
+      const newValue=await Post.create(post)
+      return newValue 
     }
 
+    async likePost(myId,postId){
+    
+     await   Post.findByIdAndUpdate(postId,{$addToSet: {likes: myId}})
+    
+    }
+
+    async deleteLikePost(myId,postId){
+        
+        await Post.findByIdAndUpdate(postId,{$pull: {likes: myId}})
+
+    }
 
     confirm_user(req,res){
         const newUser={
