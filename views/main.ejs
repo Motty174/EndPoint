@@ -3,27 +3,26 @@
 <div class="flexbox">
     <!-- User info -->
     <div class=" m-2 text-white main_info">
-        <div class="user_info" >
-            <img style="width: 100%;max-width:450px;height: auto;"  src=<%= data.image %> alt="Main picture user" class="user_image rounded-circle" id="user_image">
-            <br><br>
-            <p class="user_name" id="user_name"><%= data.name %></p>
-            <p class=" bio text-center w-100" > "<%= data.bio %>"</p>
-            <ul class="user_info_bar">
+        <div class="user_info m-2" >
+            <img style="width: 100%;max-width:450px;height: auto;" class="m-2" src=<%= data.image %> alt="Main picture user" class="user_image rounded-circle" id="user_image">
+            <p class="user_name w-100 text-center m-2" id="user_name"><%= data.name %></p>
+            <p class=" bio text-center w-100 m-2" > "<%= data.bio %>"</p>
+            <ul class="user_info_bar d-flex flex-row m-2 text-center justify-content-between w-100">
                 <li ><a href="/messages"><i class="fas fa-envelope fa-2x" ></i></a></li>
                 <li ><a href="/users"><i class="fas fa-users fa-2x"></i></a></li>
                 <li ><a href="#"><i class="fas fa-bell fa-2x"></i></a></li>
                 </ul>
                 <hr>
-            <ul class="user_friends p-0 m-0">
-                <li >Followers</li>
-                <li><a href="/followers/<%= data._id %>" id="followers">0</a></li>
+            <ul class="user_friends p-0 m-2 text-center w-100">
+                <li class="m-2">Followers</li>
+                <li class="m-2"><a href="/followers/<%= data._id %>" id="followers">0</a></li>
                 <hr>
-                <li >Following</li>
-                <li><a href="/followings/<%= data._id %>" id="following">0</a></li>
+                <li class="m-2">Following</li>
+                <li class="m-2"><a href="/followings/<%= data._id %>" id="following">0</a></li>
                 <hr>        
             </ul>
             <br>
-            <div class="user_viwe_profile">
+            <div class="user_viwe_profile w-100 text-center m-2">
                 <a href="/users/<%= data._id %>" >View profile</a>
             </div>
         </div>

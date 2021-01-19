@@ -166,7 +166,54 @@ function createPostFunction(value,fromSocket){
                 let share=document.createElement('button')
                 share.innerText='Share'
                 share.classList.add('btn','btn-outline-warning')
+                share.onclick = function(e){
+
+                   e.target.parentNode.children[4].hidden = false
+               
+                }
                 controllers.appendChild(share)
+
+        //Share text overlay
+            const question = document.createElement('div') 
+             question.classList.add('overlayForComments','flex-column','p-0','bg-light','border')
+             question.hidden = true
+
+             question.setAttribute('style','height:150px;')
+             
+
+                 let question_text = document.createElement('div')
+                 question_text.innerText = "Want to share ?"
+                 question_text.classList.add('text-light','text-center','m-0','bg-warning','p-2') 
+
+                 question.appendChild(question_text)
+
+                 let yesOrNoButtons = document.createElement('div')
+                     yesOrNoButtons.classList.add('d-flex','justify-content-around','m-3')
+
+                     let yesButton = document.createElement('button')
+                     yesButton.innerText = "Yes"
+                     yesButton.classList.add('text-light','btn','btn-outline-success','p-2')
+                     yesOrNoButtons.appendChild(yesButton)
+
+                     let noButton = document.createElement('button')
+                     noButton.innerText = "No"
+                     noButton.classList.add('text-light','btn','btn-outline-danger','p-2')
+                     yesOrNoButtons.appendChild(noButton)
+                 question.append(yesOrNoButtons)
+         
+                     let closeButton = document.createElement('button')
+                     closeButton.innerText = "Close"
+                     closeButton.classList.add('btn','btn-dark','p-2')
+                     closeButton.onclick =function (e){
+                        const doc = e
+                         closeShare(doc)
+                     }
+                question.appendChild(closeButton)
+
+            controllers.appendChild(question)
+
+
+
 
         post_info.appendChild(controllers)
       
@@ -308,4 +355,11 @@ function commentTemplate(comment,comment_place){
         commentBody.appendChild(commentTextBody)
 comment_place.appendChild(commentBody)
 comment_place.scrollTo( 0,comment_place.scrollHeight)
+}
+
+function closeShare(doc) {
+    
+doc.target.parentNode.classList.remove('d-flex')
+doc.target.parentNode.hidden = true
+console.log(doc.target.parentNode)
 }

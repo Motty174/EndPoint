@@ -103,19 +103,11 @@ io.on('connection',socket=>{
         })
 
     socket.on('message',(data)=>{
-            io.emit('broadcast',data)
-        })
-    socket.on('message_to',(data)=>{
-        socket.join(data.room)
-        io.to(data.room).emit('hi')
-        })   
-
-        socket.on('disconnect', () => {
-
-            io.emit('online_count',online.length)
-            
-        })
-    
+          
+        io.to().emit('broadcast',data)
+        
+    })
+       
 })
 // mongoose.connection.once('open',()=>{
 

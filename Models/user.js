@@ -27,6 +27,10 @@ const user=mongoose.Schema({
         required: true
     },
     image:{type: String,default: '/images/user.png'},
+    registerDate: {
+        type: Date,
+        default: new Date()
+    }
   })
 const User=mongoose.model( 'User' , user )
 module.exports=User

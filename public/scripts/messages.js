@@ -16,7 +16,7 @@ function clicked(event){
     if(event.target.id && currentRoom!=event.target.id){
         currentRoom=event.target.id
         socket.emit( 'create_room', Date.now() )   
-
+        console.log(currentRoom)
         // if(rooms.indexOf(currentRoom)==-1){
         // rooms.push(currentRoom)}
     }else {

@@ -10,6 +10,10 @@ const token=mongoose.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    date: {
+        type: Date,
+        default: new Date()
     }
 })
 
