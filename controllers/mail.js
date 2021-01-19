@@ -1,6 +1,6 @@
 const nodemailer=require('nodemailer')
-// const local='https://endpointweb.herokuapp.com/'
-const local='http://localhost:8080/'
+const local='https://endpointweb.herokuapp.com/'
+// const local='http://localhost:8080/'
 
 
 const authCheck=async function(email,number){

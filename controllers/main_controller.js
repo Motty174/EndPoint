@@ -64,7 +64,7 @@ class MainController{
     }
     
     check_for_follow(req,res){
-        Follow.findOne({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
+        Follow.findOne({followerId: req.user._id,followingId: req.params.followId},(err,data) => {
             if(err){
                 return res.status(500).send('Server error occured')
             }
@@ -76,12 +76,12 @@ class MainController{
     }
 
     follow(req,res){
-        
-        if(req.params.myId==req.params.followId){
+        console.log(req.user)
+        if(req.user._id==req.params.followId){
             return res.json({error: "Cant follow or unfollow to this id"})
         }
         
-        Follow.findOne({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
+        Follow.findOne({followerId: req.user._id,followingId: req.params.followId},(err,data) => {
             if(err){
                 return res.status(500).send('Server error occured')
             }
@@ -89,7 +89,7 @@ class MainController{
                 return res.json({following: false,text: 'Cant follow because exists'})
             }
            
-        Follow.create({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
+        Follow.create({followerId: req.user._id, followingId: req.params.followId},(err,data) => {
             if(err) throw err
             return res.json({follow:true,data: data})
         })
@@ -99,18 +99,18 @@ class MainController{
 
     unfollow(req,res){
         
-        if(req.params.myId==req.params.followId){
+        if(req.user._id==req.params.followId){
             return res.json({error: "Cant follow or unfollow to this id"})
         }
 
-        Follow.findOne({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
+        Follow.findOne({followerId: req.user._id, followingId: req.params.followId},(err,data) => {
             if(err){
                 return res.status(500).send('Server error occured')
             }
            if(!data){
                 return res.json({following: false,text: 'Cant unfollow because does not exist'})
             }
-       Follow.deleteOne({followerId: req.params.myId,followingId: req.params.followId},(err,data) => {
+       Follow.deleteOne({followerId: req.user._id, followingId: req.params.followId},(err,data) => {
            if(err) throw err
            return res.json({follow: false,data: data})
        })
@@ -119,12 +119,12 @@ class MainController{
 
     followerInfo(req,res){
         const id = req.params.id
-        Follow.find({followerId: id},(err,followings) => {
+        Follow.find({followerId: req.user._id},(err,followings) => {
             if(err) {
                 return res.sendStatus(500)
             }
 
-            Follow.find({followingId: id},(err,followers) => {
+            Follow.find({followingId: req.user._id},(err,followers) => {
                 if(err) {
                     return res.sendStatus(500)
                 }
@@ -135,8 +135,8 @@ class MainController{
 
     
     followersList(req,res){
-        const id = req.params.id
-        Follow.find({followingId: id}).populate("followerId").exec((err,data) => {
+
+        Follow.find({followingId: req.user._id}).populate("followerId").exec((err,data) => {
         if(err) throw err
         data=data.map(elem => elem.followerId)
         if(data.length==0){
@@ -149,8 +149,8 @@ class MainController{
     }
 
     followingsList(req,res){
-            const id = req.params.id
-        Follow.find({followerId: id}).populate("followingId").exec((err,data) => {
+
+        Follow.find({followerId: req.user._id}).populate("followingId").exec((err,data) => {
             if(err) throw err
            data=data.map(elem => elem.followingId)
             if(data.length==0){
@@ -163,8 +163,8 @@ class MainController{
     }
 
     allPosts(req,res){
-            const id=req.params.id
-        Post.find({permission: id})
+
+        Post.find({permission: req.user._id})
         .sort({date: "desc"})
         .exec((err,data) =>{
             return res.json(data)
@@ -173,6 +173,7 @@ class MainController{
     }
 
    async postComments(req,res){
+       
         const postId = req.params.id
         const comments = await Comment.find({postId: postId}).lean().populate('user',{name:1 ,image: 1})
         return res.json(comments)

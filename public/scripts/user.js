@@ -11,7 +11,7 @@ if(user_id==following_id){
     return false
 }
 
-fetch(`${local_host}checkForFollow/${user_id}/${following_id}`)
+fetch(`${local_host}checkForFollow/${following_id}`)
 .then(res => res.json())
 .then(result => {
     
@@ -41,7 +41,7 @@ follow.onclick = function(event){
     
     if(following==false){
             
-            fetch(`${local_host}follow/${user_id}/${following_id}`)
+            fetch(`${local_host}follow/${following_id}`)
             .then(res => res.json() )
             .then(result => {
 
@@ -55,7 +55,7 @@ follow.onclick = function(event){
 
             })
         }else{
-            fetch(`${local_host}unfollow/${user_id}/${following_id}`)
+            fetch(`${local_host}unfollow/${following_id}`)
             .then( res => res.json() )
             .then( result => {
                 

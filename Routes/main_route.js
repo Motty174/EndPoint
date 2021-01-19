@@ -46,19 +46,19 @@ route
 
 .get( '/users/:id', singleUser , tokenChecker, main_controller.users_by_id)
 
-.get( '/followerInfo/:id' , tokenChecker, main_controller.followerInfo)
+.get( '/followerInfo' , tokenChecker, main_controller.followerInfo)
 
-.get( '/follow/:myId/:followId' , tokenChecker, main_controller.follow)
+.get( '/follow/:followId' , tokenChecker, main_controller.follow)
 
-.get( '/unfollow/:myId/:followId' ,tokenChecker, main_controller.unfollow)
+.get( '/unfollow/:followId' ,tokenChecker, main_controller.unfollow)
 
-.get( '/checkForFollow/:myId/:followId' , tokenChecker , main_controller.check_for_follow)
+.get( '/checkForFollow/:followId' , tokenChecker , main_controller.check_for_follow)
 
-.get( '/followers/:id', tokenChecker, main_controller.followersList)
+.get( '/followers', tokenChecker, main_controller.followersList)
 
-.get( '/followings/:id' , tokenChecker, main_controller.followingsList)
+.get( '/followings' , tokenChecker, main_controller.followingsList)
 
-.get( '/allposts/:id', tokenChecker, main_controller.allPosts)
+.get( '/allposts', tokenChecker, main_controller.allPosts)
 
 .get( '/postComments/:id', tokenChecker, main_controller.postComments)
 

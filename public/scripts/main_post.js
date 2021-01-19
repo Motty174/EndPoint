@@ -224,7 +224,7 @@ function createPostFunction(value,fromSocket){
 
 }
 
-fetch( `${local_host}allposts/${document.getElementById('current_user_id').innerText}`)
+fetch( `${local_host}allposts`)
 .then(res => res.json())
 .then(result => {
 

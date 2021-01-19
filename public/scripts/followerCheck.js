@@ -1,6 +1,5 @@
-const id=document.getElementById('current_user_id').innerText
 
-fetch(`${local_host}followerInfo/${id}`)
+fetch(`${local_host}followerInfo`)
 .then(res => res.json())
 .then(result => {
    
